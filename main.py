@@ -7,8 +7,13 @@ import lnlib
 # init!
 ut = lnlib.UsenetGroup()
 
+# THIS IS ALPHA!
 rinput = raw_input("Gimme gimme gimme server name >> ")
 ut.connect(rinput)
 print "OK" if ut.isconnected() else "NO"
+
+rinput = raw_input("Gimme gimme gimme group name >> ")
+(resp, count, first, last, name) = ut.getgroup(rinput)
+print ('Group ' + name + ' has '+ count + ' articles, range ' + first + ' to ' + last)
 
 
