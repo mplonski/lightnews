@@ -1,0 +1,4 @@
+lightnews
+=========
+
+light usenet client
