@@ -15,9 +15,9 @@ class UsenetGroup:
 
 	def connect ( self, url, user = None, password = None ):
 		if user == None:
-			self.ins = nntplib.NNTP( url, port )
+			self.ins = nntplib.NNTP( url )
 		else:
-			self.ins = nntplib.NNTP( url, port, user, password )
+			self.ins = nntplib.NNTP( url, user, password )
 
 	def isconnected (self):
 		return False if self.ins == None else True
