@@ -1,3 +1,11 @@
+#
+# name:         lightnews' library
+# description:  class for lightnews
+# authors:      mplonski / maciej plonski / sokoli.pl
+#               ksx4system / ksx4system.net
+# licence:      GNU GPL
+#
+
 import nntplib
 
 class UsenetGroup:
@@ -5,7 +13,7 @@ class UsenetGroup:
 		print "initialized"
 		self.ins = None
 
-	def connect ( self, url, port = 119, user = None, password = None ):
+	def connect ( self, url, user = None, password = None ):
 		if user == None:
 			self.ins = nntplib.NNTP( url, port )
 		else:

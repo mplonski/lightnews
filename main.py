@@ -1,7 +1,12 @@
-# lightnews -- light usenet client
+#
+# name:		lightnews
+# description:	light usenet client
 # authors:	mplonski / maciej plonski / sokoli.pl
 #		ksx4system / ksx4system.net
+# licence:	GNU GPL
+#
 
+import getpass
 import lnlib
 
 DEBUG = 1 # 1 -- debug, 0 -- normal
@@ -44,7 +49,16 @@ while (not (cmd == 'q')):
 		if ut.connected():
 			print ut.getwelcome()
 		else:
-			print "blad!"
+			print "error!"
+	elif cm[0] == "sa":
+		ut.disconnect()
+		username = raw_input("Username [%s]: " % getpass.getuser())
+		password = getpass.getpass()
+		ut.connect(cm[1], username, password)
+		if ut.connected():
+			print ut.getwelcome()
+		else:
+			print "error!"
 	elif cm[0] == "l" and len(cm) == 1:
 		resp, subs = ut.getarticles('subject', first, last)
 		for id, sub in subs[-10:]:
