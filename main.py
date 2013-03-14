@@ -1,4 +1,4 @@
-#
+#!/usr/bin/python
 # name:		lightnews
 # description:	light usenet client
 # authors:	mplonski / maciej plonski / sokoli.pl
@@ -38,8 +38,8 @@ print ('Group ' + name + ' has '+ count + ' articles, range ' + first + ' to ' +
 
 cmd = raw_input(' > ')
 while (not (cmd == 'q')):
-	print "ok\n"
 	cm = cmd.split(" ")
+	print cm
 	if cm[0] == "g":
 		(resp, count, first, last, name) = ut.getgroup(cm[1])
 		print "Done!"
@@ -75,11 +75,8 @@ while (not (cmd == 'q')):
 		resp, num, n2id, nlist = ut.gethead(cm[1])
 		for k in nlist:
 			print k
-	print cm
+	else:
+		print "Commands: g, s, sa, l, l %i %i, a %i, h, q"
 
 	cmd = raw_input(' > ')
-
-resp, subs = ut.getarticles('subject', first, last)
-for id, sub in subs[-10:]:
-	print id, sub
 
