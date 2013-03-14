@@ -6,8 +6,12 @@
 # licence:	GNU GPL
 #
 
-import getpass
-import lnlib
+import sys
+
+try:
+	import getpass, readline, lnlib
+except:
+	sys.exit("Error: python libraries are not available")
 
 DEBUG = 1 # 1 -- debug, 0 -- normal
 
@@ -42,7 +46,7 @@ while (not (cmd == 'q')):
 	print cm
 	if cm[0] == "g":
 		(resp, count, first, last, name) = ut.getgroup(cm[1])
-		print "Done!"
+		print ("Group %s has %s articles, range %s to %s" % (name, count, first, last))
 	elif cm[0] == "s":
 		ut.disconnect()
 		ut.connect(cm[1])

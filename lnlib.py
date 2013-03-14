@@ -10,7 +10,6 @@ import nntplib
 
 class UsenetGroup:
 	def __init__(self):
-		print "initialized"
 		self.ins = None
 
 	def connect ( self, url, user = None, password = None ):
