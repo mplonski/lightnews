@@ -1,5 +1,5 @@
 all: compile.py main.py lnlib.py
-	@python compile.py
+	@python -B compile.py
 	@echo "Done"
 
 clean: *.pyc
