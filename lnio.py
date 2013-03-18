@@ -65,6 +65,28 @@ class lnio:
 	def getcache(self):
 		return self.cache
 
+	def getcache(self, group):
+		f = open(self.cache + "/" + group + ".lnset")
+		line = f.readlines()[0]
+		f.close()
+		return line
+
+	def writecache(self, group, cache):
+		f = open(self.cache + "/" + group + ".lnset", "w")
+		f.writelines(cache)
+		f.close()
+
+	def getcachearticle(self, group, art):
+		f = open(self.cache + "/" + group + "/" + art + ".lnset")
+		lines = f.readlines()
+		f.close()
+		return lines
+
+	def writecachearticle(self, group, art, cache)
+		f = open(self.cache + "/" + group + "/" + art + ".lnset")
+		f.writelines(cache)
+		f.close()
+
 	def setautodownload(self, auto):
 		self.autodownload = auto
 
