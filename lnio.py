@@ -6,7 +6,7 @@
 # licence:      GNU GPL
 #
 
-from os import system
+from os import system, listdir
 
 class lnio:
 	def __init__(self):
@@ -154,6 +154,14 @@ class lnio:
 		else:
 			f.close()
 			return 0
+
+	def getcachearticles(self, group):
+		try:
+			files = listdir(self.cache + "/" + group + "/")
+		except IOError:
+			return None
+		else:
+			return len(files)
 
 	def getcachearticle(self, group, art):
 		try:

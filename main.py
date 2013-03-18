@@ -79,8 +79,17 @@ def docmd(cmd):
 				print ("There is no cache available for this group.")
 
 	# dispalying last 10 or chosen articles in group
-	elif cm[0] == "list" and len(cm) == 4:
+	elif cm[0] == "list" and len(cm) == 2:
 		# TODO: check cache, articles cache, group cache, if autodownload is on than upgrade cache, display result
+		if getcachearticles(cm[1]) == None:
+			if io.getautodownload() == 1:
+				print("Error! Please enable autodownload or cache!")
+				return 0
+			# download, display
+		else:
+			if io.getautodownload() == 0:
+				# download
+			# display
 		resp, subs = ut.getarticles('subject', first, last)
 		for id, sub in subs[int(cm[1]):int(cm[2])]:
 			print id, sub
