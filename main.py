@@ -6,6 +6,8 @@
 # licence:	GNU GPL
 #
 
+settings = None
+
 import sys
 try:
 	import getpass, readline, lnlib, lnio
@@ -16,71 +18,89 @@ DEBUG = 1 # 1 -- debug, 0 -- normal
 
 # init!
 ut = lnlib.UsenetGroup()
+io = lnio.lnio()
 
-# DEBUG
-if  DEBUG == 1:
-	ut.connect('news.gmane.org')
-	(resp, count, first, last, name) = ut.getgroup('gmane.comp.python.committers')
+if not settings == None:
+	io.setfilename(settings)
+io.getoptions()
 
+print ('Hello! This program is not ready yet ;)')
 
-# THIS IS ALPHA!
-if DEBUG == 0:
-	rinput = raw_input("Gimme gimme gimme server name >> ")
-	ut.connect(rinput)
-
-if ut.isconnected():
-	print ut.getwelcome()
-else:
-	print "error"
-
-if DEBUG == 0:
-	rinput = raw_input("Gimme gimme gimme group name >> ")
-	(resp, count, first, last, name) = ut.getgroup(rinput)
-
-#print ('Group ' + name + ' has '+ count + ' articles, range ' + first + ' to ' + last)
-print ('Hello! Please add lnio firstly or wait for programmer to do it! :-)')
-
-cmd = raw_input(' > ')
-while (not (cmd == 'q')):
+def docmd(cmd):
 	cm = cmd.split(" ")
+
+	# ONLY FOR DEBUG
 	print cm
-	if cm[0] == "g":
-		(resp, count, first, last, name) = ut.getgroup(cm[1])
-		print ("Group %s has %s articles, range %s to %s" % (name, count, first, last))
-	elif cm[0] == "s":
-		ut.disconnect()
-		ut.connect(cm[1])
-		if ut.connected():
-			print ut.getwelcome()
+
+	# adding group
+	if cm[0] == "addgroup" and len(cm) == 3:
+		io.addgroup(cm[1], cm[2])
+		print("Added new group")
+	elif cm[0] == "addgroup":
+		print("Error! Use 'addgroup server group'.")
+
+	# displaying groups
+	elif cm[0] == "groups":
+		print("Your groups:")
+		groups = io.getgroups()
+		i = 0
+		for g in groups:
+			c = " " if io.isgroupcache(g[0]) == 0 else " [c] "
+			print(" " + str(i) + ":" + c + g[0] + " on server " + g[1])
+			i += 1
+
+	# displaying information about group
+	elif cm[0] == "group" and len(cm) == 2:
+		groups = io.getgroups()
+		if int(cm[1]) > len(groups):
+			print("Error! This group doesn't exist!")
+			return 0
+		if io.isgroupcache(g[0]) == -1:
+			if io.autodownload() == 1:
+				print("Error! There is no cache available and autodownload is off")
+				print("       Please do enable autodownload or cache!")
+				return 0
+			res, count, first, last, name = ut.getgroup(cm[1])
+			print ("Group %s has %s articles, first one is %i and last one is %s" % (name, count, first, last))
+			print ("There is no cache available for this group.")
+			return 0
 		else:
-			print "error!"
-	elif cm[0] == "sa":
-		ut.disconnect()
-		username = raw_input("Username [%s]: " % getpass.getuser())
-		password = getpass.getpass()
-		ut.connect(cm[1], username, password)
-		if ut.connected():
-			print ut.getwelcome()
-		else:
-			print "error!"
-	elif cm[0] == "l" and len(cm) == 1:
-		resp, subs = ut.getarticles('subject', first, last)
-		for id, sub in subs[-10:]:
-			print id, sub
-	elif cm[0] == "l" and len(cm) == 3:
+			cache = io.getcache(cm[1])
+			if io.autodownload() == 0:
+				res, count, first, last, name = ut.getgroup(cm[1])
+				io.writecache(["count", count], ["first", first], ["last", last], ["name", name], ["iscache", cache[4]])
+				cache = io.getcache(cm[1])
+			print ("Group %s has %s articles, first one is %i and last one is %i" & (cache[3], cache[0], cache[1], cache[2]))
+			if cache[4] > 0:
+				print ("There is cache available for %s last articles" % cache[4])
+			elif cache[4] == 0:
+				print ("There is cache available only for group info")
+			else:
+				print ("There is no cache available for this group.")
+
+	# dispalying last 10 or chosen articles in group
+	elif cm[0] == "list" and len(cm) == 4:
+		# TODO: check cache, articles cache, group cache, if autodownload is on than upgrade cache, display result
 		resp, subs = ut.getarticles('subject', first, last)
 		for id, sub in subs[int(cm[1]):int(cm[2])]:
 			print id, sub
-	elif cm[0] == "a" and len(cm) == 2:
+
+	# getting article
+	elif cm[0] == "article" and len(cm) == 2:
 		resp, num, n2id, nlist = ut.getbody(cm[1])
 		for k in nlist:
 			print k
+
+	# getting head
 	elif cm[0] == "h" and len(cm) == 2:
 		resp, num, n2id, nlist = ut.gethead(cm[1])
 		for k in nlist:
 			print k
 	else:
-		print "Commands: g, s, sa, l, l %i %i, a %i, h, q"
+		print "Commands: will be one day ;)"
 
+cmd = raw_input(' > ')
+while (not (cmd == 'q')):
+	docmd(cmd)
 	cmd = raw_input(' > ')
 
