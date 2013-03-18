@@ -6,11 +6,14 @@
 # licence:      GNU GPL
 #
 
+from os import system
+
 class lnio:
 	def __init__:
 		self.filename = "~/.lightnewsrc"
 		self.groups = [ ]
 		self.cache = None
+		self.cachedir = "~/.lightnewscache/"
 		self.autodownload = None
 
 	def getoptions(self):
@@ -23,6 +26,8 @@ class lnio:
 			opt = line.split("=", 1)[1]
 			if name == "cache":
 				self.cache = opt
+			elif name == "cachedir":
+				self.cachedir = opt
 			elif name == "groups":
 				groups = opt.split(";")
 				for group in groups:
@@ -33,11 +38,11 @@ class lnio:
 			else:
 				# wtf?
 				pass
-		return True
 
 	def setoptions(self):
 		f = open(self.filename, "w")
 		f.write("cache=" + self.cache)
+		f.write("cachedir=" + self.cachedir)
 		f.write("autodownload=" + str(self.autodownload))
 		tmp = ""
 		i = 0
@@ -48,7 +53,6 @@ class lnio:
 			i = 1
 		f.write("groups=" + tmp)
 		f.close()
-		return True
 
 	def getgroups(self):
 		return self.groups
@@ -65,11 +69,22 @@ class lnio:
 	def getcache(self):
 		return self.cache
 
+	def setcachedir(self, cdir):
+		self.cachedir = cdir
+
+	def getcachedir(self):
+		return self.cachedir
+
 	def getcache(self, group):
-		f = open(self.cache + "/" + group + ".lnset")
+		f = open(self.cachedir + "/" + group + ".lnset")
 		line = f.readlines()[0]
 		f.close()
 		return line
+
+	def movecache(self, newdir):
+		# TODO do it nicer :-)
+		system("mv " + self.cachedir + " " + newdir)
+		self.setcachedir(newdir)
 
 	def writecache(self, group, cache):
 		f = open(self.cache + "/" + group + ".lnset", "w")
