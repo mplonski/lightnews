@@ -7,9 +7,8 @@
 #
 
 import sys
-
 try:
-	import getpass, readline, lnlib
+	import getpass, readline, lnlib, lnio
 except:
 	sys.exit("Error: python libraries are not available")
 
@@ -38,7 +37,8 @@ if DEBUG == 0:
 	rinput = raw_input("Gimme gimme gimme group name >> ")
 	(resp, count, first, last, name) = ut.getgroup(rinput)
 
-print ('Group ' + name + ' has '+ count + ' articles, range ' + first + ' to ' + last)
+#print ('Group ' + name + ' has '+ count + ' articles, range ' + first + ' to ' + last)
+print ('Hello! Please add lnio firstly or wait for programmer to do it! :-)')
 
 cmd = raw_input(' > ')
 while (not (cmd == 'q')):

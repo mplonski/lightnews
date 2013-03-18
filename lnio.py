@@ -9,7 +9,7 @@
 from os import system
 
 class lnio:
-	def __init__:
+	def __init__():
 		self.filename = "~/.lightnewsrc"
 		self.groups = [ ]
 		self.cache = None
@@ -63,7 +63,7 @@ class lnio:
 	def removegroup(self, group):
 		self.groups.remove(group)
 
-	def setcache(self, cache)
+	def setcache(self, cache):
 		self.cache = cache
 
 	def getcache(self):
@@ -76,10 +76,14 @@ class lnio:
 		return self.cachedir
 
 	def getcache(self, group):
-		f = open(self.cachedir + "/" + group + ".lnset")
-		line = f.readlines()[0]
-		f.close()
-		return line
+		try:
+			f = open(self.cachedir + "/" + group + ".lnset")
+			line = f.readlines()[0]
+		except IOError:
+			return None
+		else:
+			return line
+			f.close()
 
 	def movecache(self, newdir):
 		# TODO do it nicer :-)
@@ -87,20 +91,34 @@ class lnio:
 		self.setcachedir(newdir)
 
 	def writecache(self, group, cache):
-		f = open(self.cache + "/" + group + ".lnset", "w")
-		f.writelines(cache)
-		f.close()
+		try:
+			f = open(self.cache + "/" + group + ".lnset", "w")
+			f.writelines(cache)
+		except IOError:
+			return None
+		else:
+			f.close()
+			return 0
 
 	def getcachearticle(self, group, art):
-		f = open(self.cache + "/" + group + "/" + art + ".lnset")
-		lines = f.readlines()
-		f.close()
-		return lines
+		try:
+			f = open(self.cache + "/" + group + "/" + art + ".lnset")
+			lines = f.readlines()
+		except IOError:
+			return None
+		else:
+			f.close()
+			return lines
 
-	def writecachearticle(self, group, art, cache)
-		f = open(self.cache + "/" + group + "/" + art + ".lnset")
-		f.writelines(cache)
-		f.close()
+	def writecachearticle(self, group, art, cache):
+		try:
+			f = open(self.cache + "/" + group + "/" + art + ".lnset")
+			f.writelines(cache)
+		except IOError:
+			return None
+		else:
+			f.close()
+			return 0
 
 	def setautodownload(self, auto):
 		self.autodownload = auto
