@@ -161,11 +161,11 @@ class lnio:
 		except IOError:
 			return None
 		else:
-			return len(files)
+			return files
 
 	def getcachearticle(self, group, art):
 		try:
-			f = open(self.cache + "/" + group + "/" + art + ".lnset")
+			f = open(self.cache + "/" + group + "/" + art)
 			lines = f.readlines()
 		except IOError:
 			return None
@@ -175,7 +175,7 @@ class lnio:
 
 	def writecachearticle(self, group, art, cache):
 		try:
-			f = open(self.cache + "/" + group + "/" + art + ".lnset")
+			f = open(self.cache + "/" + group + "/" + art)
 			f.writelines(cache)
 		except IOError:
 			return None

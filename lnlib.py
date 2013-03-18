@@ -11,6 +11,7 @@ import nntplib
 class UsenetGroup:
 	def __init__(self):
 		self.ins = None
+		self.group = None
 
 	def connect ( self, url, user = None, password = None ):
 		if user == None:
@@ -54,10 +55,14 @@ class UsenetGroup:
 			return None
 		return self.ins.description(group)
 
+	def getgroupname (self):
+		return self.group
+
 	def getgroup (self, name):
 		if not self.isconnected:
 			return None
 		response, count, first, last, name = self.ins.group(name)
+		self.group = name
 		return [response, count, first, last, name]
 
 	def getstat (self, nid):

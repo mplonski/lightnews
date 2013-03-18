@@ -56,20 +56,12 @@ def docmd(cmd):
 			print("Error! This group doesn't exist!")
 			return 0
 		if io.isgroupcache(g[0]) == -1:
-			if io.autodownload() == 1:
-				print("Error! There is no cache available and autodownload is off")
-				print("       Please do enable autodownload or cache!")
-				return 0
 			res, count, first, last, name = ut.getgroup(cm[1])
 			print ("Group %s has %s articles, first one is %i and last one is %s" % (name, count, first, last))
 			print ("There is no cache available for this group.")
 			return 0
 		else:
 			cache = io.getcache(cm[1])
-			if io.autodownload() == 0:
-				res, count, first, last, name = ut.getgroup(cm[1])
-				io.writecache(["count", count], ["first", first], ["last", last], ["name", name], ["iscache", cache[4]])
-				cache = io.getcache(cm[1])
 			print ("Group %s has %s articles, first one is %i and last one is %i" & (cache[3], cache[0], cache[1], cache[2]))
 			if cache[4] > 0:
 				print ("There is cache available for %s last articles" % cache[4])
@@ -77,19 +69,19 @@ def docmd(cmd):
 				print ("There is cache available only for group info")
 			else:
 				print ("There is no cache available for this group.")
+	elif cm[0] == "group":
+		print("Error! Use 'group groupname'")
 
 	# dispalying last 10 or chosen articles in group
-	elif cm[0] == "list" and len(cm) == 2:
-		# TODO: check cache, articles cache, group cache, if autodownload is on than upgrade cache, display result
-		if getcachearticles(cm[1]) == None:
-			if io.getautodownload() == 1:
-				print("Error! Please enable autodownload or cache!")
-				return 0
-			# download, display
+	elif cm[0] == "list" and ( (len(cm) == 3) or (len(cm) == 1) ):
+		cache = getcachearticles(ut.getgroupname())
+		if cache == None:
+			# TODO first, last
+			resp, subs = ut.getarticles('subject', first, last)
+			# TODO :P
 		else:
-			if io.getautodownload() == 0:
-				# download
-			# display
+			for art in cache:
+				print(" " + str(art) + ": " + getcachearticle(ut.getgroupname(), art))
 		resp, subs = ut.getarticles('subject', first, last)
 		for id, sub in subs[int(cm[1]):int(cm[2])]:
 			print id, sub
