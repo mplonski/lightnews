@@ -6,11 +6,9 @@
 # licence:	GNU GPL
 #
 
-# TODO: changed cache based on files to sqlite, main.py require
-# to reconsider and rewrite
+# TODO: changed cache based on files to sqlite
+# main.py requires to reconsider and rewrite
 # doing it right now, commiting just to backup :-)
-
-settings = None
 
 import sys
 try:
@@ -18,15 +16,9 @@ try:
 except:
 	sys.exit("Error: python libraries are not available")
 
-DEBUG = 1 # 1 -- debug, 0 -- normal
-
 # init!
 ut = lnlib.UsenetGroup()
 io = lnio.lnio()
-
-if not settings == None:
-	io.setfilename(settings)
-io.getoptions()
 
 print ('Hello! This program is not ready yet ;)')
 
@@ -38,8 +30,12 @@ def docmd(cmd):
 	# ONLY FOR DEBUG
 	print cm
 
+	# hello!
+	if cm[0] == "hello":
+		print("Hello! :-)")
+
 	# adding group
-	if cm[0] == "addgroup" and len(cm) == 3:
+	elif cm[0] == "addgroup" and len(cm) == 3:
 		io.addgroup(cm[1], cm[2])
 		print("Added new group")
 	elif cm[0] == "addgroup":
@@ -48,16 +44,13 @@ def docmd(cmd):
 	# displaying groups
 	elif cm[0] == "groups":
 		print("Your groups:")
-		i = 0
 		for g in groups:
-			c = " " if io.isgroupcache(g[0]) == 0 else " [c] "
-			print(" " + str(i) + ":" + c + g[0] + " on server " + g[1])
-			i += 1
-		if i == 0:
-			print("No groups found")
+			c = " " if g[3] == 0 else " [c] "
+			print(" " + str(g[0]) + ":" + c + g[2] + " on server " + g[1])
 
 	# displaying information about group
 	elif cm[0] == "group" and len(cm) == 2:
+		return 0
 		if int(cm[1]) >= len(groups):
 			print("Error! This group doesn't exist!")
 			return 0
@@ -89,11 +82,11 @@ def docmd(cmd):
 
 	# dispalying last 10 or chosen articles in group
 	elif cm[0] == "list" and ( (len(cm) == 3) or (len(cm) == 1) ):
+		return 0
 		cache = getc_group_art(ut.getservername(), ut.getgroupname())
 		if cache == None:
 			# TODO first, last
-			if ut.getservername() == ut.
-			res, count, first, last, name = ut.getgroup(
+			res, count, first, last, name = ut.getgroup()
 			resp, subs = ut.getarticles('subject', first, last)
 			# TODO :P
 		else:
@@ -105,12 +98,14 @@ def docmd(cmd):
 
 	# getting article
 	elif cm[0] == "article" and len(cm) == 2:
+		return 0
 		resp, num, n2id, nlist = ut.getbody(cm[1])
 		for k in nlist:
 			print k
 
 	# getting head
 	elif cm[0] == "h" and len(cm) == 2:
+		return 0
 		resp, num, n2id, nlist = ut.gethead(cm[1])
 		for k in nlist:
 			print k
@@ -118,7 +113,7 @@ def docmd(cmd):
 		print "Commands: will be one day ;)"
 
 cmd = raw_input(' > ')
-while (not (cmd == 'q')):
+while (not ( (cmd == 'q') or (cmd == 'quit') ) ):
 	docmd(cmd)
 	cmd = raw_input(' > ')
 
