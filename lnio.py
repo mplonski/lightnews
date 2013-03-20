@@ -11,11 +11,11 @@ import sqlite3
 
 # WARNING: moved everything to sqlite!
 # TODO: cache, cache, cache.
-# def getc_group ( server, group )
+# def getgroup ( server, group )
 # return group info ( [count, first, last, name, cache] )
-# def getc_group_art ( server, group ) works for current group!
+# def getgarts ( server, group ) works for current group!
 # return articles ( [ [id, title], ... ] )
-# def getc_article ( server, group, art_id ) works for current group!
+# def getart ( server, group, art_id ) works for current group!
 # return article (body)
 
 class lnio:
