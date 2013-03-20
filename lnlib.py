@@ -12,12 +12,16 @@ class UsenetGroup:
 	def __init__(self):
 		self.ins = None
 		self.group = None
+		self.server = None
 
 	def connect ( self, url, user = None, password = None ):
+		if self.isconnected():
+			self.disconnect()
 		if user == None:
 			self.ins = nntplib.NNTP( url )
 		else:
 			self.ins = nntplib.NNTP( url, user, password )
+		self.server = url
 
 	def isconnected (self):
 		return False if self.ins == None else True
@@ -25,6 +29,7 @@ class UsenetGroup:
 	def disconnect (self):
 		self.ins.quit()
 		self.ins = None
+		self.group = None
 
 	def getwelcome (self):
 		if self.isconnected == False:
@@ -58,12 +63,19 @@ class UsenetGroup:
 	def getgroupname (self):
 		return self.group
 
+	def getservername (self):
+		return self.server
+
 	def getgroup (self, name):
 		if not self.isconnected:
 			return None
 		response, count, first, last, name = self.ins.group(name)
 		self.group = name
 		return [response, count, first, last, name]
+
+	def setservergroup (self, server, group ):
+		self.server = server
+		self.group = group
 
 	def getstat (self, nid):
 		if not self.isconnected:

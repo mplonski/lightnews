@@ -7,186 +7,70 @@
 #
 
 from os import system, listdir
+import sqlite3
+
+# WARNING: moved everything to sqlite!
+# TODO: cache, cache, cache.
+# def getc_group ( server, group )
+# return group info ( [count, first, last, name, cache] )
+# def getc_group_art ( server, group ) works for current group!
+# return articles ( [ [id, title], ... ] )
+# def getc_article ( server, group, art_id ) works for current group!
+# return article (body)
 
 class lnio:
-	def __init__(self):
+	def __init__(self, filename = None):
 		# settings' file name
-		self.filename = "~/.lightnewsrc"
+		self.filename = "./ln.db" if filename == None else filename
+		self.conn = sqlite3.connect(self.filename)
+		self.c = self.conn.cursor()
 
-		# list of groups
-		self.groups = [ ]
-
-		# -1 -> no cache, 0 -> only groups, 1...n -> groups + 1...n number of topics
-		self.cache = None
-
-		# directory with cache
-		self.cachedir = "~/.lightnewscache/"
-
-		# 0 -> autodownload on, 1 -> autodownload off
-		self.autodownload = None
-
-	def setfilename(self, fdir):
-		self.filename = fdir
-	
-	def getfilename(self):
-		return self.filename
-
-	def getoptions(self):
-		try:
-			f = open(self.filename)
-			lines = f.readlines()
-
-			for line in lines:
-				name = line.split("=", 1)[0]
-				opt = line.split("=", 1)[1]
-				if name == "cache":
-					self.cache = opt
-				elif name == "cachedir":
-					self.cachedir = opt
-				elif name == "groups":
-					groups = opt.split(";")
-					for group in groups:
-						tmp = group.split(":")
-						self.groups.append( [ tmp[0], tmp[1] ] )
-					self.groups.sort()
-				elif name == "autodownload":
-					elf.autodownload = int(opt)
-				else:
-					# wtf?
-					pass
-		except IOError:
+	def getoption(self, name):
+		self.c.execute("SELECT * FROM options WHERE name = '%s'" % name)
+		opt = self.c.fetchone()
+		if opt == None:
 			return None
 		else:
-			f.close()
-			return 0
+			return opt[1]
+		return 0
 
-	def setoptions(self):
-		try:
-			f = open(self.filename, "w")
-			f.write("cache=" + self.cache)
-			f.write("cachedir=" + self.cachedir)
-			f.write("autodownload=" + str(self.autodownload))
-			tmp = ""
-			i = 0
-			for group in self.groups:
-				tmp += group
-				if not i == 0:
-					tmp += ";"
-				i = 1
-			f.write("groups=" + tmp)
-		except IOError:
-			return None
-		else:
-			f.close()
-			return 0
+	def setoption(self, name, val):
+		self.c.execute("UPDATE options SET val = '%s' WHERE name = '%s'" % (val, name))
+		self.conn.commit()
+		return 0
 
 	def getgroups(self):
-		return self.groups
+		self.c.execute("SELECT groups.id, servers.name, groups.name, groups.cache FROM groups LEFT JOIN servers ON groups.server_id = servers.id")
+		return self.c.fetchall()
 
 	def addgroup(self, server, group):
-		self.groups.append([group, server])
-		self.groups.sort()
+		# checking if server exists...
+		self.c.execute("SELECT * FROM servers WHERE name = '%s'" % server)
+		ser = self.c.fetchone()
+		if ser == None:
+			self.c.execute("INSERT INTO servers VALUES (NULL, '%s', NULL, NULL)" % server)
+			self.conn.commit()
+			self.c.execute("SELECT * FROM servers WHERE name = '%s'" % server)
+			ser = self.c.fetchone()
+		sid = ser[0]
 
-	def removegroup(self, group):
-		self.groups.remove(group)
+		# checking if group exists...
+		self.c.execute("SELECT * FROM groups WHERE name = '%s' AND server_id = %s" % (group, sid))
+		ser = self.c.fetchone()
+		if ser == None:
+			self.c.execute("INSERT INTO groups VALUES (NULL, %s, '%s', 0)" % (sid, group))
+			self.conn.commit()
+		return 0
 
-	def setcache(self, cache):
-		self.cache = cache
-
-	def getcache(self):
-		return self.cache
-
-	def setcachedir(self, cdir):
-		self.cachedir = cdir
-
-	def getcachedir(self):
-		return self.cachedir
-
-	def isgroupcache(self, group):
-		try:
-			f = open(self.cachedir + "/" + group + ".lnset")
-		except IOError:
+	def removegroup(self, server, group):
+		self.c.execute("SELECT groups.id FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.name='%s' AND servers.name='%s'" % (group, server))
+		rg = self.c.fetchall()
+		if rg == None:
 			return -1
 		else:
-			f.close()
-			return 0
-
-	def getcache(self, group):
-		try:
-			f = open(self.cachedir + "/" + group + ".lnset")
-			lines = f.readlines()
-			count = -1
-			first = -1
-			last = -1
-			name = None
-			for line in lines:
-				zname, opt = line.split("=")
-				if zname == "count":
-					count = int(opt)
-				elif zname == "first":
-					first = int(opt)
-				elif zname == "last":
-					last = int(opt)
-				elif zname == "name":
-					name = opt
-				elif zname == "iscache":
-					iscache = int(opt)
-				if (count > 0) and (first > 0) and (last > 0) and (not name == None):
-					return [count, first, last, name, iscache]
-		except IOError:
-			return None
-		else:
-			return line
-			f.close()
-
-	def movecache(self, newdir):
-		# TODO do it nicer :-)
-		system("mv " + self.cachedir + " " + newdir)
-		self.setcachedir(newdir)
-
-	def writecache(self, group, cache):
-		try:
-			f = open(self.cache + "/" + group + ".lnset", "w")
-			for opt in cache:
-				f.write(opt[0] + "=" + opt[1])
-		except IOError:
-			return None
-		else:
-			f.close()
-			return 0
-
-	def getcachearticles(self, group):
-		try:
-			files = listdir(self.cache + "/" + group + "/")
-		except IOError:
-			return None
-		else:
-			return files
-
-	def getcachearticle(self, group, art):
-		try:
-			f = open(self.cache + "/" + group + "/" + art)
-			lines = f.readlines()
-		except IOError:
-			return None
-		else:
-			f.close()
-			return lines
-
-	def writecachearticle(self, group, art, cache):
-		try:
-			f = open(self.cache + "/" + group + "/" + art)
-			f.writelines(cache)
-		except IOError:
-			return None
-		else:
-			f.close()
-			return 0
-
-	def setautodownload(self, auto):
-		self.autodownload = auto
-
-	def getautodownload(self):
-		return self.autodownload
+			gid = rg[0][0]
+			self.c.execute("DELETE FROM groups WHERE id = %s" & gid)
+			self.conn.commit()
+		return 0
 
 	
