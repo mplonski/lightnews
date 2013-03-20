@@ -50,6 +50,8 @@ def docmd(cmd):
 			i += 1
 
 	# displaying information about group
+	# TODO: do group groupname
+	# TODO: need to think about new ways of keeping cache and about rewriting this code
 	elif cm[0] == "group" and len(cm) == 2:
 		groups = io.getgroups()
 		if int(cm[1]) > len(groups):
@@ -64,13 +66,13 @@ def docmd(cmd):
 			cache = io.getcache(cm[1])
 			print ("Group %s has %s articles, first one is %i and last one is %i" & (cache[3], cache[0], cache[1], cache[2]))
 			if cache[4] > 0:
-				print ("There is cache available for %s last articles" % cache[4])
+				print ("Cache is enabled for last %s articles" % cache[4])
 			elif cache[4] == 0:
-				print ("There is cache available only for group info")
+				print ("Cache is enabled only for group info")
 			else:
 				print ("There is no cache available for this group.")
 	elif cm[0] == "group":
-		print("Error! Use 'group groupname'")
+		print("Error! Use 'group groupid'")
 
 	# dispalying last 10 or chosen articles in group
 	elif cm[0] == "list" and ( (len(cm) == 3) or (len(cm) == 1) ):
