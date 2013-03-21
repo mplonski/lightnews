@@ -70,7 +70,7 @@ class lnio:
 			self.c.execute("SELECT groups.id, groups.name, servers.name, groups.cache, groups.count, groups.first, groups.last FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.name='%s' AND servers.name='%s'" % (group, server))
 		group = self.c.fetchone()
 		if group == None:
-			print("Group not found")
+			return None
 		else:
 			if group[3] > -1:
 				gid, name, server, cache, count, first, last = group
@@ -80,5 +80,5 @@ class lnio:
 				gid = group[0]
 				server = group[2]
 				resp, count, first, last, name = ut.getgroup(group[1])
-			print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
+			return [gid, name, server, count, first, last]
 

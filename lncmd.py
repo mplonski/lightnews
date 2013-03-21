@@ -38,10 +38,12 @@ class lncmd:
 		elif cm[0] == "groups":
 			self.listgroups()
 
+		elif cm[0] == "group" and len(cm) == 3:
+			self.group_name(cm[1], cm[2])
 		elif cm[0] == "group" and len(cm) == 2:
-			self.group(cm[1])
+			self.group_id(cm[1])
 		elif cm[0] == "group":
-			print ("Error! Use 'group group_id' or 'group group_name'")
+			print ("Error! Use 'group group_id' or 'group server_name group_name'")
 
 		elif cm[0] == "list" and (len(cm) == 3):
 			self.artlist(cm[1], cm[2])
@@ -73,8 +75,13 @@ class lncmd:
 			c = " " if g[3] == 0 else " [c] "
 			print(" " + str(g[0]) + ":" + c + g[2] + " on server " + g[1])
 
-	def group(self, gid):
-		return 0
+	def group_name(self, gserver, ggroup)
+		gid, name, server, count, fist, last = io.getgroup(server = gserver, group = ggroup)
+		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
+
+	def group_id(self, grid):
+		gid, name, server, count, first, last = io.getgroup(gid=grid)
+		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
 
 	# dispalying last 10 or chosen articles in group
 	def artlist(self, start = None, end = None): 
