@@ -12,19 +12,20 @@
 
 import sys
 try:
-	import getpass, readline, lnlib, lnio
+	import getpass, readline, lnlib, lnio, lncmd
 except:
 	sys.exit("Error: python libraries are not available")
 
 # init!
 ut = lnlib.UsenetGroup()
 io = lnio.lnio()
+co = lncmd.lncmd(ut, io)
 
 print ('Hello! This program is not ready yet ;)')
 print ('Need to go to the university, will finish it later')
 
 cmd = raw_input(' > ')
 while (not ( (cmd == 'q') or (cmd == 'quit') ) ):
-	docmd(cmd)
+	co.docmd(cmd)
 	cmd = raw_input(' > ')
 
