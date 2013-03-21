@@ -12,6 +12,10 @@ def behappy():
 	return ':-)'
 ```
 
+### packages
+
+We hope that lightnews is going to be ready in .deb (Debian/Ubuntu) and .rpm (Fedora) packages (and, in some time, in public repositories).
+
 ### user interface
 
 Lightnews will be operated in command-line style. Example:
