@@ -68,7 +68,7 @@ Lightnews is operated in command-line style. Example:
 default mode and single-group mode
 ----------------------------------
 
-As you can see at _user interface_, lightnews is operated in command-like style.
+As you can see at [user interface](https://github.com/mplonski/lightnews#user-interface), lightnews is operated in command-like style.
 
 There're two possible options of command-line. **First one** is enabled by default and means that all commands related to group are to declare which group they're going to be about. For example:
 
