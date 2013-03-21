@@ -1,5 +1,5 @@
 
-all:
+help:
 	@echo "Options: setupdb cleandb clean"
 
 setupdb:
