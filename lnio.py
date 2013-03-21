@@ -48,7 +48,7 @@ class lnio:
 		self.c.execute("SELECT * FROM groups WHERE name = '%s' AND server_id = %s" % (group, sid))
 		ser = self.c.fetchone()
 		if ser == None:
-			self.c.execute("INSERT INTO groups VALUES (NULL, %s, '%s', 0)" % (sid, group))
+			self.c.execute("INSERT INTO groups VALUES (NULL, %s, '%s', 0, 0, 0, 0)" % (sid, group))
 			self.conn.commit()
 		return 0
 
@@ -59,7 +59,8 @@ class lnio:
 			return -1
 		else:
 			gid = rg[0][0]
-			self.c.execute("DELETE FROM groups WHERE id = %s" & gid)
+			self.c.execute("DELETE FROM groups WHERE id = %s" % gid)
+			self.c.execute("DELETE FROM articles WHERE group_id = %s" % gid)
 			self.conn.commit()
 		return 0
 
