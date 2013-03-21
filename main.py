@@ -6,11 +6,11 @@
 # licence:	GNU GPL
 #
 
-try:
-		import sys, sqlite3, getpass, readline
-		import lnlib, lnio, lncmd
-except:
-	sys.exit("Error: python libraries are not available")
+#try:
+import sys, sqlite3, getpass, readline
+import lnlib, lnio, lncmd
+#except:
+#	sys.exit("Error: python libraries are not available")
 
 # init!
 ut = lnlib.UsenetGroup()

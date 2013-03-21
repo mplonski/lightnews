@@ -72,13 +72,5 @@ class lnio:
 		if group == None:
 			return None
 		else:
-			if group[3] > -1:
-				gid, name, server, cache, count, first, last = group
-			else:
-				if not group[2] == ut.getservername():
-					ut.connect(group[2])
-				gid = group[0]
-				server = group[2]
-				resp, count, first, last, name = ut.getgroup(group[1])
-			return [gid, name, server, count, first, last]
+			return group
 
