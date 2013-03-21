@@ -7,6 +7,7 @@
 #
 
 import sqlite3
+from psycopg2.extensions import adapt
 
 class lnio:
 	def __init__(self, filename = None):
@@ -30,7 +31,7 @@ class lnio:
 		return 0
 
 	def getgroups(self):
-		self.c.execute("SELECT groups.id, servers.name, groups.name, groups.cache FROM groups LEFT JOIN servers ON groups.server_id = servers.id")
+		self.c.execute("SELECT groups.id, groups.name, servers.id, servers.name, groups.cache FROM groups LEFT JOIN servers ON groups.server_id = servers.id")
 		return self.c.fetchall()
 
 	def addgroup(self, server, group):
@@ -60,18 +61,56 @@ class lnio:
 		else:
 			gid = rg[0][0]
 			self.c.execute("DELETE FROM groups WHERE id = %s" % gid)
-			self.c.execute("DELETE FROM articles WHERE group_id = %s" % gid)
 			self.conn.commit()
+			self.cleangrouparticle(gid)
 		return 0
 
 	def getgroup(self, server = None, group = None, gid = None):
 		if not gid == None:
-			self.c.execute("SELECT groups.id, groups.name, servers.name, groups.cache, groups.count, groups.first, groups.last FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.id='%s'" % gid)
+			self.c.execute("SELECT groups.id, groups.name, servers.id, servers.name, groups.cache, groups.count, groups.first, groups.last FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.id='%s'" % gid)
 		else:
-			self.c.execute("SELECT groups.id, groups.name, servers.name, groups.cache, groups.count, groups.first, groups.last FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.name='%s' AND servers.name='%s'" % (group, server))
+			self.c.execute("SELECT groups.id, groups.name, servers.id, servers.name, groups.cache, groups.count, groups.first, groups.last FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.name='%s' AND servers.name='%s'" % (group, server))
 		group = self.c.fetchone()
 		if group == None:
 			return None
 		else:
 			return group
+
+	def updategroup(self, gid, chg):
+		gstr = "UPDATE groups SET "
+		i = 0
+		for k in chg:
+			gstr += ", " if i == 1 else " "
+			gstr += ("%s = '%s'" % (k[0], k[1]) )
+			i = 1
+		gstr += (" WHERE id = %s" % gid)
+		self.c.execute(gstr)
+		self.conn.commit()
+
+	def cleangrouparticle(self, gid):
+		self.c.execute("DELETE FROM articles WHERE group_id = %s" %gid)
+		self.conn.commit()
+
+	def addarticles(self, data):
+		# data = [ [art_id, srv_id, group_id, title, body], [ ... ] ... ]
+		if len(data) == 1:
+			st = ""
+			for l in a[4]:
+				st += (l + "\n")
+			self.c.execute("INSERT INTO articles VALUES (NULL, %s, %s, %s, %s, %s)" % ( data[0][0], data[0][1]. data[0][2], adapt(data[0][3]), adapt(st) ) )
+			self.conn.commit()
+		else:
+			for a in data:
+				st = ""
+				for l in a[4]:
+					st += (l + "\n")
+				self.c.execute("INSERT INTO articles VALUES (NULL, %s, %s, %s, %s, %s)" % ( a[0], a[1], a[2], adapt(a[3]), adapt(st) ) )
+				self.conn.commit()
+
+	def getarticles(self, gid, start = None, end = None):
+		query = "SELECT articles.id, articles.art_id, servers.id, groups.name, servers.id, servers.name, articles.title, articles.body FROM articles INNER JOIN servers ON servers.id = articles.server_id INNER JOIN groups ON groups.id = articles.group_id WHERE articles.group_id = %s" % gid
+		if not ( (start == None) or (end == None) ):
+			query += ( " AND articles.art_id > %s AND articles.art_id < %s" % (start-1, end+1) )
+		self.c.execute(query)
+		return self.c.fetchall()
 

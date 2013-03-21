@@ -6,6 +6,8 @@
 # licence:      GNU GPL
 #
 
+from psycopg2.extensions import adapt
+
 class lncmd:
 	def __init__(self, ut, io):
 		self.ut = ut
@@ -45,15 +47,22 @@ class lncmd:
 		elif cm[0] == "group":
 			print ("Error! Use 'group group_id' or 'group server_name group_name'")
 
-		elif cm[0] == "list" and (len(cm) == 3):
-			self.artlist(cm[1], cm[2])
+		elif cm[0] == "list" and (len(cm) == 4):
+			self.artlist(cm[1], cm[2], cm[3])
+		elif cm[0] == "list" and (len(cm) == 2):
+			self.artlist(cm[1], None, None)
 		elif cm[0] == "list":
-			self.artlist()
+			print ("Error! Use 'list group_id' or 'list group_id start end'")
 
 		elif cm[0] == "article" and len(cm) == 2:
 			self.article(cm[1])
 		elif cm[0] == "article":
 			print("Error! Use 'article art_id'")
+
+		elif cm[0] == "download" and ( (len(cm) == 2) or (len(cm) == 3) ):
+			self.download(cm)
+		elif cm[0] == "download":
+			print ("Error! Use 'download all' or 'download group_id' or 'download server group'")
 
 		elif cm[0] == "help":
 			print("Will be one day...")
@@ -72,12 +81,8 @@ class lncmd:
 	def listgroups(self):
 		print("Your groups:")
 		for g in self.groups:
-			c = " " if g[3] == 0 else " [c] "
-			print(" " + str(g[0]) + ":" + c + g[2] + " on server " + g[1])
-
-	def group_name(self, gserver, ggroup):
-		gid, name, server, count, first, last = self.group2(self.io.getgroup(server = gserver, group = ggroup))
-		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
+			c = " " if g[4] == 0 else " [c] "
+			print(" " + str(g[0]) + ":" + c + g[1] + " on server " + g[3])
 
 	def group(self, grid = None, gserver = None, ggroup = None):
 		if not grid == None:
@@ -89,7 +94,7 @@ class lncmd:
 			print("Error! Group not found.")
 			return -1
 		# yupi, group exists!
-		gid, name, server, cache, count, first, last = dgroup
+		gid, name, sid, server, cache, count, first, last = dgroup
 		if cache == -1:
 			if not self.ut.getservername() == server:
 				self.ut.connect(server)
@@ -97,12 +102,46 @@ class lncmd:
 		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
 
 	# dispalying last 10 or chosen articles in group
-	def artlist(self, start = None, end = None): 
-		return 0
+	def artlist(self, gid, start = None, end = None): 
+		arts = self.io.getarticles(gid, start, end)
+		if arts == None:
+			# TODO internet...
+			pass
+		else:
+			print arts
+			print("Displaying all cached articles (%s) for group %s on server %s" % ( len(arts), arts[0][3], arts[0][5] ) )
+			for k in arts:
+				print("%s >> %s" % (k[1], k[6]))
 
 	# getting article
 	def article(self, art):
 		return 0
+
+	def download(self, cm):
+		if len(cm) == 2:
+			if cm[1] == 'all':
+				# download all
+				groups = self.io.getgroups()
+			else:
+				groups = [ self.io.getgroup(gid = cm[1]) ]
+		else:
+			groups = [ self.io.getgroup(server = cm[1], group = cm[2]) ]
+		for g in groups:
+			gid, name, sid, server, cache, count, first, last = g
+			if cache > -1:
+				if not self.ut.getservername() == server:
+					self.ut.connect(server)
+				resp, count, first, last, name = self.ut.getgroup(name)
+				self.io.updategroup(gid, [ ["count", count], ["first", first], ["last", last] ])
+			if cache > 0:
+				self.io.cleangrouparticle(gid)
+				art = [ ]
+				resp, arts = self.ut.getarticles('subject', first, last)
+				for aid, sub in arts[-cache:]:
+					body = self.ut.getbody(aid)[3]
+					art.append( [aid, sid, gid, sub, body ] )
+				self.io.addarticles(art)
+		print("Done!")
 
 	def getend(self):
 		return ["q", "quit"]

@@ -18,7 +18,7 @@ Lightnews requires:
 
 * Linux (you can modify code to be able to run it on Windows, but we officially support only Linux)
 * python (lightnews is tested on python 2.7, 3.0 should be also ok)
-* python libraries: os, sys, nntplib, sqlite3, getpass, readline
+* python libraries: os, sys, nntplib, sqlite3, getpass, readline, psycopg2
 * lightnews libraries: lnlin, lnio, lncmd (included in repository)
 * linux program: Makefile (required to run setup/cleaning automatically)
 
