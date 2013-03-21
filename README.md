@@ -3,7 +3,8 @@ lightnews
 
 light usenet client
 
-### version
+version
+--------
 
 Lightnews is in prealpha version! (I hope it will be ready in... 1 week?)
 
@@ -12,7 +13,8 @@ def behappy():
 	return ':-)'
 ```
 
-### requirements
+requirements
+------------
 
 Lightnews requires:
 
@@ -22,7 +24,8 @@ Lightnews requires:
 * lightnews libraries: lnlin, lnio, lncmd (included in repository)
 * linux program: Makefile (required to run setup/cleaning automatically)
 
-### configuration & cleaning up
+configuration & cleaning up
+---------------------------
 
 To setup database (create tables):
 
@@ -42,7 +45,8 @@ To display all available commands:
 make help
 ```
 
-### packages
+packages
+--------
 
 We hope that lightnews is going to be ready in .deb (Debian/Ubuntu) and .rpm (Fedora) packages (and, in some time, in public repositories).
 
@@ -61,11 +65,12 @@ Lightnews is operated in command-line style. Example:
  >
 ```
 
-### default mode and single-group mode
+default mode and single-group mode
+----------------------------------
 
 As you can see at __user interface__, lightnews is operated in command-like style.
 
-There're two possible options of command-line. *First one* is enabled by default and means that all commands related to group are to declare which group they're going to be about. For example:
+There're two possible options of command-line. **First one** is enabled by default and means that all commands related to group are to declare which group they're going to be about. For example:
 
 ```
  > list 3
@@ -76,7 +81,7 @@ There're two possible options of command-line. *First one* is enabled by default
 
 `list 3` means, that you want to display list of topics from group no. 3.
 
-*Second one* is dedicated to work with one group (and *it is not implemented yet*). To switch to this mode you need to run:
+**Second one** is dedicated to work with one group (and *it is not implemented yet*). To switch to this mode you need to run:
 
 ```
  > setgroup 3
@@ -99,11 +104,12 @@ If you want to exit single-group mode, simply run:
 group_name > unsetgroup
 ```
 
-### manual
+manual
+------
 
 ***it's not ready yet :)***
 
-#### hello
+### hello
 
 Says hello.
 
@@ -113,7 +119,7 @@ Hello! :-)
  >
 ```
 
-#### addgroup
+### addgroup
 
 Adds new group.
 
@@ -125,7 +131,7 @@ Added new group
  >
 ```
 
-#### removegroup
+### removegroup
 
 Removes group.
 
@@ -139,7 +145,7 @@ Group has been removed
  > 
 ```
 
-#### groups
+### groups
 
 Display list of groups.
 
@@ -153,7 +159,7 @@ Your groups:
 
 1/2/... is group's id, [c] stands for enabled cache
 
-#### list
+### list
 
 Display list of topics in group.
 
@@ -180,7 +186,7 @@ Displaying all cached articles (11) for group gmane.comp.python.committers on se
  >
 ```
 
-#### download
+### download
 
 Downloads cache for group or all groups.
 
@@ -192,7 +198,8 @@ Error! Use 'download all' or 'download group_id' or 'download server group'
 
 You can define what should be cached (downloaded) using ... .
 
-### more?
+more?
+-----
 
 will be something (soon)
 
