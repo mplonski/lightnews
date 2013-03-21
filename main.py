@@ -22,10 +22,9 @@ io = lnio.lnio()
 co = lncmd.lncmd(ut, io)
 
 print ('Hello! This program is not ready yet ;)')
-print ('Need to go to the university, will finish it later')
 
-cmd = raw_input(' > ')
-while (not ( (cmd == 'q') or (cmd == 'quit') ) ):
+cmd = co.getcmd()
+while (not cmd in co.getend() ):
 	co.docmd(cmd)
-	cmd = raw_input(' > ')
+	cmd = co.getcmd()
 

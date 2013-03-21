@@ -87,3 +87,9 @@ class lncmd:
 	def article(self, art):
 		return 0
 
+	def getend(self):
+		return ["q", "quit"]
+
+	def getcmd(self):
+		return raw_input(" > ")
+
