@@ -6,13 +6,9 @@
 # licence:	GNU GPL
 #
 
-# TODO: changed cache based on files to sqlite
-# main.py requires to reconsider and rewrite
-# doing it right now, commiting just to backup :-)
-
-import sys
 try:
-	import getpass, readline, lnlib, lnio, lncmd
+		import sys, sqlite3, getpass, readline
+		import lnlib, lnio, lncmd
 except:
 	sys.exit("Error: python libraries are not available")
 

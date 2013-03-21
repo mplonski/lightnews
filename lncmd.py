@@ -6,10 +6,6 @@
 # licence:      GNU GPL
 #
 
-# TODO: changed cache based on files to sqlite
-# everything requires to reconsider and rewrite
-# doing it right now, commiting just to backup :-)
-
 class lncmd:
 	def __init__(self, ut, io):
 		self.ut = ut
@@ -41,6 +37,7 @@ class lncmd:
 
 		elif cm[0] == "groups":
 			self.listgroups()
+
 		elif cm[0] == "group" and len(cm) == 2:
 			self.group(cm[1])
 		elif cm[0] == "group":

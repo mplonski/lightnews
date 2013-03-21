@@ -6,7 +6,6 @@
 # licence:      GNU GPL
 #
 
-from os import system, listdir
 import sqlite3
 
 class lnio:
@@ -64,4 +63,22 @@ class lnio:
 			self.conn.commit()
 		return 0
 
-	
+	def getgroup(self, server = None, group = None, gid = None):
+		if not gid == None:
+			self.c.execute("SELECT groups.id, groups.name, servers.name, groups.cache, groups.count, groups.first, groups.last FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.id='%s'" % gid)
+		else:
+			self.c.execute("SELECT groups.id, groups.name, servers.name, groups.cache, groups.count, groups.first, groups.last FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.name='%s' AND servers.name='%s'" % (group, server))
+		group = self.c.fetchone()
+		if group == None:
+			print("Group not found")
+		else:
+			if group[3] > -1:
+				gid, name, server, cache, count, first, last = group
+			else:
+				if not group[2] == ut.getservername():
+					ut.connect(group[2])
+				gid = group[0]
+				server = group[2]
+				resp, count, first, last, name = ut.getgroup(group[1])
+			print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
+
