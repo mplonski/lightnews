@@ -97,20 +97,22 @@ class lnio:
 			st = ""
 			for l in a[4]:
 				st += (l + "\n")
-			self.c.execute("INSERT INTO articles VALUES (NULL, %s, %s, %s, %s, %s)" % ( data[0][0], data[0][1]. data[0][2], adapt(data[0][3]), adapt(st) ) )
+			self.c.execute("INSERT INTO articles VALUES (NULL, %s, %s, %s, %s, %s, 0)" % ( data[0][0], data[0][1]. data[0][2], adapt(data[0][3]), adapt(st) ) )
 			self.conn.commit()
 		else:
 			for a in data:
 				st = ""
 				for l in a[4]:
 					st += (l + "\n")
-				self.c.execute("INSERT INTO articles VALUES (NULL, %s, %s, %s, %s, %s)" % ( a[0], a[1], a[2], adapt(a[3]), adapt(st) ) )
+				self.c.execute("INSERT INTO articles VALUES (NULL, %s, %s, %s, %s, %s, 0)" % ( a[0], a[1], a[2], adapt(a[3]), adapt(st) ) )
 				self.conn.commit()
 
-	def getarticles(self, gid, start = None, end = None):
-		query = "SELECT articles.id, articles.art_id, servers.id, groups.name, servers.id, servers.name, articles.title, articles.body FROM articles INNER JOIN servers ON servers.id = articles.server_id INNER JOIN groups ON groups.id = articles.group_id WHERE articles.group_id = %s" % gid
+	def getarticles(self, gid, start = None, end = None, is_read = None):
+		query = "SELECT articles.id, articles.art_id, servers.id, groups.name, servers.id, servers.name, articles.title, articles.body, articles.is_read FROM articles INNER JOIN servers ON servers.id = articles.server_id INNER JOIN groups ON groups.id = articles.group_id WHERE articles.group_id = %s" % gid
 		if not ( (start == None) or (end == None) ):
 			query += ( " AND articles.art_id > %s AND articles.art_id < %s" % (start-1, end+1) )
+		if not ( is_read == None):
+			query += ( " AND articles.is_read = %s" % is_read )
 		self.c.execute(query)
 		return self.c.fetchall()
 
