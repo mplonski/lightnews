@@ -16,25 +16,25 @@ def behappy():
 
 To setup database (create tables):
 
-```bash
+```
 make setupdb
 ```
 
 To delete database:
 
-```bash
+```
 make cleandb
 ```
 
 To remove temporary files (e.g. .pyc): 
 
-```bash
+```
 make clean
 ```
 
 To display all available commands:
 
-```bash
+```
 make help
 ```
 
