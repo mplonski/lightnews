@@ -83,6 +83,11 @@ class lncmd:
 
 	def group(self, grid = None, gserver = None, ggroup = None):
 		if not grid == None:
+			try:
+				grid = int(grid)
+			except:
+				print ("Error! Specified group_id (%s) is not a number." % (grid))
+				return -1
 			dgroup = self.io.getgroup(gid=grid)
 		else:
 			dgroup = self.io.getgroup(server = gserver, group = ggroup)
@@ -100,6 +105,13 @@ class lncmd:
 
 	# dispalying last 10 or chosen articles in group
 	def artlist(self, gid, start = None, end = None): 
+		try:
+			gid = int(gid)
+			start = int(start)
+			end = int(end)
+		except:
+			print ("Error! group_id or start or end is not a number.")
+			return -1
 		arts = self.io.getarticles(gid, start, end)
 		if arts == None:
 			# TODO internet...
@@ -110,7 +122,13 @@ class lncmd:
 				print("%s >> %s" % (k[1], k[6]))
 
 	# getting article
-	def article(self, art):
+	def article(self, gid, art):
+		try:
+			gid = int(gid)
+			art = int(art)
+		except:
+			print ("Error! group_id or article_id is not a number.")
+			return -1
 		return 0
 
 	def download(self, cm):
@@ -119,6 +137,11 @@ class lncmd:
 				# download all
 				groups = self.io.getgroups()
 			else:
+				try:
+					cm[1] = int(cm[1])
+				except:
+					print ("Error! Specified group_id (%s) is not a number." % cm[1])
+					return -1
 				groups = [ self.io.getgroup(gid = cm[1]) ]
 		else:
 			groups = [ self.io.getgroup(server = cm[1], group = cm[2]) ]
