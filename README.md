@@ -53,7 +53,7 @@ We hope that lightnews is going to be ready in .deb (Debian/Ubuntu) and .rpm (Fe
 user interface
 --------------
 
-Lightnews is operated in command-line style. Example:
+Lightnews is operated in command-line style.
 
 ```
  > help
@@ -68,9 +68,9 @@ Lightnews is operated in command-line style. Example:
 default mode and single-group mode
 ----------------------------------
 
-As you can see at [user interface](https://github.com/mplonski/lightnews#user-interface), lightnews is operated in command-like style.
+As you can see at [user interface](https://github.com/mplonski/lightnews#user-interface) lightnews is operated in command-like style. There're two possible options of command-line.
 
-There're two possible options of command-line. **First one** is enabled by default and means that all commands related to group are to declare which group they're going to be about. For example:
+**First one** is enabled by default and means that all commands related to group are to contain which group they're to be about. For example:
 
 ```
  > list 3
@@ -79,17 +79,17 @@ There're two possible options of command-line. **First one** is enabled by defau
 125 >> example topic
 ```
 
-`list 3` means, that you want to display list of topics from group no. 3.
+`list 3` means that you want to display list of topics from group no. 3.
 
-**Second one** is dedicated to work with one group (and *it is not implemented yet*). To switch to this mode you need to run:
+**Second one** is dedicated to work with one group (and **it's not implemented yet**). To switch to this mode you need to run:
 
 ```
  > setgroup 3
-Done!
+Done! Turned on single-group mode for group group_name on server server_name.
  group_name >
 ```
 
-Now command-line is set to work with group no. 3 named group_name (remember that server's name is not displayed in this mode). In this mode you can simply run:
+Command-line is set to work with group no. 3 named group_name (remember that server's name is not displayed in this mode). Now you can simply run:
 
 ```
  group_name > list
@@ -188,7 +188,7 @@ Displaying all cached articles (11) for group gmane.comp.python.committers on se
 
 ### download
 
-Downloads cache for group or all groups.
+Downloads cache for specified group or all groups.
 
 ```
  > download
