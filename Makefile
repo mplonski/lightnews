@@ -9,11 +9,9 @@ setupdb:
 	@python ./make/setup.py
 	@echo "Done"
 
-cleandb:
+clean:
 	@rm -f ./ln.db
 	@echo "Database removed"
-
-clean:
 	@rm -f ./*.pyc
 	@echo "Removed *.pyc"
 

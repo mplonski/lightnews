@@ -108,7 +108,6 @@ class lncmd:
 			# TODO internet...
 			pass
 		else:
-			print arts
 			print("Displaying all cached articles (%s) for group %s on server %s" % ( len(arts), arts[0][3], arts[0][5] ) )
 			for k in arts:
 				print("%s >> %s" % (k[1], k[6]))
@@ -126,6 +125,7 @@ class lncmd:
 				groups = [ self.io.getgroup(gid = cm[1]) ]
 		else:
 			groups = [ self.io.getgroup(server = cm[1], group = cm[2]) ]
+		print ("Downloading started... stay calm :-) (in case of slow downlink and big cache it may take some time)")
 		for g in groups:
 			gid, name, sid, server, cache, count, first, last = g
 			if cache > -1:
@@ -136,12 +136,12 @@ class lncmd:
 			if cache > 0:
 				self.io.cleangrouparticle(gid)
 				art = [ ]
-				resp, arts = self.ut.getarticles('subject', first, last)
-				for aid, sub in arts[-cache:]:
+				resp, arts = self.ut.getarticles('subject', str(int(last)-int(cache)), last)
+				for aid, sub in arts:
 					body = self.ut.getbody(aid)[3]
 					art.append( [aid, sid, gid, sub, body ] )
 				self.io.addarticles(art)
-		print("Done!")
+		print("Done! Thanks for being patient!")
 
 	def getend(self):
 		return ["q", "quit"]
