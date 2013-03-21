@@ -68,7 +68,7 @@ Lightnews is operated in command-line style. Example:
 default mode and single-group mode
 ----------------------------------
 
-As you can see at __user interface__, lightnews is operated in command-like style.
+As you can see at _user interface_, lightnews is operated in command-like style.
 
 There're two possible options of command-line. **First one** is enabled by default and means that all commands related to group are to declare which group they're going to be about. For example:
 
@@ -89,16 +89,16 @@ Done!
  group_name >
 ```
 
-Now command-line is set to work with group 3, named group_name (remember that server's name is not displayed in this mode). In this mode you can simply run:
+Now command-line is set to work with group no. 3 named group_name (remember that server's name is not displayed in this mode). In this mode you can simply run:
 
 ```
- > list
+ group_name > list
 123 >> example topic
 124 >> example topic
 125 >> example topic
 ```
 
-If you want to exit single-group mode, simply run:
+If you want to exit single-group mode, run:
 
 ```
 group_name > unsetgroup
@@ -107,7 +107,7 @@ group_name > unsetgroup
 manual
 ------
 
-***it's not ready yet :)***
+# it's not ready yet :) #
 
 ### hello
 
