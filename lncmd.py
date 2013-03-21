@@ -28,33 +28,47 @@ class lncmd:
 
 		if cm[0] == "hello":
 			self.hello()
+
 		elif cm[0] == "addgroup" and len(cm) == 3:
 			self.addgroup(cm[1], cm[2])
 		elif cm[0] == "addgroup":
 			print ("Error! Use 'addgroup server group'")
+
+		elif cm[0] == "removegroup" and len(cm) == 3:
+			self.removegroup(cm[1], cm[2])
+		elif cm[0] == "removegroup":
+			print ("Error! Use 'removegroup server group")
+
 		elif cm[0] == "groups":
 			self.listgroups()
 		elif cm[0] == "group" and len(cm) == 2:
 			self.group(cm[1])
 		elif cm[0] == "group":
 			print ("Error! Use 'group group_id' or 'group group_name'")
+
 		elif cm[0] == "list" and (len(cm) == 3):
 			self.artlist(cm[1], cm[2])
 		elif cm[0] == "list":
 			self.artlist()
+
 		elif cm[0] == "article" and len(cm) == 2:
 			self.article(cm[1])
 		elif cm[0] == "article":
 			print("Error! Use 'article art_id'")
+
 		elif cm[0] == "help":
 			print("Will be one day...")
 				
 	def hello(self):
 		print("Hello! :-)")
 
-	def addgroups(self, server, group):
+	def addgroup(self, server, group):
 		self.io.addgroup(server, group)
 		print("Added new group")
+
+	def removegroup(self, server, group):
+		self.io.removegroup(server, group)
+		print("Group has been removed")
 
 	def listgroups(self):
 		print("Your groups:")

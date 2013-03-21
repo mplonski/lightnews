@@ -9,15 +9,6 @@
 from os import system, listdir
 import sqlite3
 
-# WARNING: moved everything to sqlite!
-# TODO: cache, cache, cache.
-# def getgroup ( server, group )
-# return group info ( [count, first, last, name, cache] )
-# def getgarts ( server, group ) works for current group!
-# return articles ( [ [id, title], ... ] )
-# def getart ( server, group, art_id ) works for current group!
-# return article (body)
-
 class lnio:
 	def __init__(self, filename = None):
 		# settings' file name
