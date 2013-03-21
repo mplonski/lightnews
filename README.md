@@ -48,7 +48,7 @@ We hope that lightnews is going to be ready in .deb (Debian/Ubuntu) and .rpm (Fe
 
 ### user interface
 
-Lightnews will be operated in command-line style. Example:
+Lightnews is operated in command-line style. Example:
 
 ```
  > help
@@ -59,6 +59,12 @@ Lightnews will be operated in command-line style. Example:
    Added group group.name on server.name
  >
 ```
+
+### manual
+
+#### test
+
+#### test2
 
 ### more?
 
