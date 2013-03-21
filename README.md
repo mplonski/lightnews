@@ -7,7 +7,7 @@ light usenet client
 
 Lightnews is in prealpha version! (I hope it will be ready in... 1 week?)
 
-```
+```python
 def behappy():
 	return ':-)'
 ```
