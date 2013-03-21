@@ -30,13 +30,7 @@ To setup database (create tables):
 make setupdb
 ```
 
-To delete database:
-
-```
-make cleandb
-```
-
-To remove temporary files (e.g. .pyc): 
+To remove database and temporary files (e.g. .pyc): 
 
 ```
 make clean

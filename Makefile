@@ -1,6 +1,6 @@
 
 help:
-	@echo "Options: setupdb cleandb clean"
+	@echo "Options: help setupdb clean"
 
 setupdb:
 	@echo "Removing old database..."
@@ -10,8 +10,9 @@ setupdb:
 	@echo "Done"
 
 clean:
+	@echo "Removing database..."
 	@rm -f ./ln.db
-	@echo "Database removed"
+	@echo "Removing *.pyc files..."
 	@rm -f ./*.pyc
-	@echo "Removed *.pyc"
+	@echo "Done"
 
