@@ -21,9 +21,6 @@ class lncmd:
 
 		cm = self.analcmd(cmd)
 
-		# ONLY FOR DEBUG
-		print cm
-
 		if cm[0] == "hello":
 			self.hello()
 
