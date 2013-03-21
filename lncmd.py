@@ -133,7 +133,7 @@ class lncmd:
 			if cache > 0:
 				self.io.cleangrouparticle(gid)
 				art = [ ]
-				resp, arts = self.ut.getarticles('subject', str(int(last)-int(cache)), last)
+				resp, arts = self.ut.getarticles('subject', str(int(last)-int(cache)+1), last)
 				for aid, sub in arts:
 					body = self.ut.getbody(aid)[3]
 					art.append( [aid, sid, gid, sub, body ] )
