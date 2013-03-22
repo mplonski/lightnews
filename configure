@@ -8,7 +8,7 @@
 
 if [ "$1" == "help" ]; then
 	echo "Run:"
-	echo " - ./configure -- to check dependencies"
+	echo " - ./configure -- to check dependencies and generate Makefile"
 	echo " - ./configure debian-fixdeps -- to install necessary packaged (Debian/Ubuntu only!)"
 	exit 0
 fi
