@@ -1,6 +1,6 @@
 #
 # name:         lightnews' library
-# description:  class for lightnews
+# description:  class for lightnews responsible for command line
 # authors:      mplonski / maciej plonski / sokoli.pl
 #               ksx4system / ksx4system.net
 # licence:      GNU GPL

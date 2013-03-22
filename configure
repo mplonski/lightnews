@@ -1,4 +1,11 @@
 #! /bin/bash
+# name:			lightnews ./configure
+# description:  script for lightnews checking necessary libs
+# authors:		mplonski / maciej plonski / sokoli.pl
+# 				ksx4system / ksx4system.net
+# licence:		GNU GPL
+#
+
 if hash python 2>/dev/null; then
 	echo "Python installed"
 else

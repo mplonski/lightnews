@@ -1,9 +1,9 @@
 #!/usr/bin/python
-# name:		lightnews
+# name:			lightnews
 # description:	light usenet client
-# authors:	mplonski / maciej plonski / sokoli.pl
-#		ksx4system / ksx4system.net
-# licence:	GNU GPL
+# authors:		mplonski / maciej plonski / sokoli.pl
+#				ksx4system / ksx4system.net
+# licence:		GNU GPL
 #
 
 #try:
