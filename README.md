@@ -172,7 +172,7 @@ Works in both modes.
 
 ### list
 
-Display list of topics in group.
+Display list of **unread** topics in group.
 
 ```
 gmane.comp.python.committers > list 3
@@ -203,6 +203,10 @@ gmane.comp.python.committers > list 3
 ```
 
 Works only in single-group mode.
+
+### listall
+
+Works exactly like `list`, but displays also read (and bold new ones).
 
 ### download
 
