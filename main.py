@@ -6,12 +6,12 @@
 # licence:		GNU GPL
 #
 
-try:
-	import os, sys, sqlite3, getpass, readline
-	import lnlib, lnio, lncmd
-	from psycopg2.extensions import adapt
-except:
-	sys.exit("Error: python libraries are not available")
+#try:
+import os, sys, sqlite3, getpass, readline
+import lnlib, lnio, lncmd
+from psycopg2.extensions import adapt
+#except:
+#:	sys.exit("Error: python libraries are not available")
 
 database = os.path.expanduser("~") + "/.lightnews.db"
 if not os.path.exists(database):

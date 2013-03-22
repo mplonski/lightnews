@@ -116,7 +116,7 @@ class UsenetGroup:
 	def getarticles (self, header, first, last):
 		if not self.isconnected:
 			return None
-		response, nlist = self.ins.xhdr(header, first + '-' + last)
+		response, nlist = self.ins.xhdr(header, "%s-%s" % (first, last))
 		return [response, nlist]
 
 	def post (self, filename):
