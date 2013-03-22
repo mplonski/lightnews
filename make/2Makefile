@@ -7,10 +7,10 @@ install:
 
 clean:
 	@echo "Removing database..."
-	@rm -f ./ln.db
 	@rm -f /home/*/.lightnews.db
 	@echo "Removing *.pyc files..."
 	@rm -f ./*.pyc
+	@rm -f ./make/*.pyc
 	@echo "Removing Makefile..."
 	@rm -f ./Makefile
 	@echo "Done"
