@@ -35,12 +35,6 @@ To check if all necessary files / libs exist:
 
 If everything is ok, Makefile should be generated.
 
-To setup database (create tables):
-
-```
-make setupdb
-```
-
 To remove database, temporary files (e.g. .pyc), Makefile: 
 
 ```
