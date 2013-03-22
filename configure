@@ -1,0 +1,21 @@
+#! /bin/bash
+if hash python 2>/dev/null; then
+	echo "Python installed"
+else
+	echo "Cannot find python"
+	exit 1
+fi
+
+for mod in "getpass" "nntplib" "psycopg2" "readline" "sqlite3" "sys"
+do
+	lntest=`python make/test_$mod.py 2>/dev/null`
+	if test $lntest = "ok" ; then
+		echo "python-$mod installed"
+	else
+		echo "Cannot find python-$mod"
+		exit 1
+	fi
+done
+
+echo 'Ready to install. Run `make install` to install lightnews'
+
