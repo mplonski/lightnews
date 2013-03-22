@@ -6,6 +6,14 @@
 # licence:		GNU GPL
 #
 
+if [ "$1" == "debian-fixdeps" ]; then
+echo "Fixing dependencies for Debian..."
+apt-get -qq update
+apt-get -y -qq install build-essential python-pysqlite2 python-psycopg2 \
+libreadline6 python-twisted-news
+echo "done!"
+fi
+
 for tfile in "lncmd.py" "lnio.py" "lnlib.py" "main.py" \
 			"make/2Makefile" "make/test_getpass.py" "make/test_psycopg2.py" \
 			"make/test_sqlite3.py" "make/setupdb.py" "make/test_nntplib.py" \
