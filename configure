@@ -6,7 +6,10 @@
 # licence:		GNU GPL
 #
 
-for tfile in "lncmd.py" "lnio.py" "lnlib.py" "main.py" "make/2Makefile" "make/test_getpass.py" "make/test_psycopg2.py" "make/test_sqlite3.py" "make/setupdb.py" "make/test_nntplib.py" "make/test_readline.py" "make/test_sys.py"
+for tfile in "lncmd.py" "lnio.py" "lnlib.py" "main.py" \
+			"make/2Makefile" "make/test_getpass.py" "make/test_psycopg2.py" \
+			"make/test_sqlite3.py" "make/setupdb.py" "make/test_nntplib.py" \
+			"make/test_readline.py" "make/test_sys.py"
 do
 	echo "Checking for $tfile"
 	if test -e ./$tfile ; then
