@@ -1,6 +1,6 @@
 
 help:
-	@echo "Options: clean help install setupdb"
+	@echo "Options: clean help install"
 
 install:
 	@echo "Installing... (sorry, not available in prealpha)"
