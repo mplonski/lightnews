@@ -30,8 +30,10 @@ class lncmd:
 		elif cm[0] == "addgroup":
 			print ("Error! Use 'addgroup server group'")
 
-		elif cm[0] == "removegroup" and len(cm) == 3:
+		elif cm[0] == "removegroup" and len(cm) == 3 and self.singlegroup == None:
 			self.removegroup(cm[1], cm[2])
+		elif cm[0] == "removegroup" and len(cm) == 3 and not self.singlegroup == None:
+			print ("Error! 'removegroup' is available only in default mode")
 		elif cm[0] == "removegroup":
 			print ("Error! Use 'removegroup server group")
 

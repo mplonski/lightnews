@@ -72,38 +72,39 @@ default mode and single-group mode
 
 As you can see at [user interface](https://github.com/mplonski/lightnews#user-interface) lightnews is operated in command-like style. There're two possible options of command-line.
 
-**First one** is enabled by default and means that all commands related to group are to contain which group they're to be about. For example:
+**First one** is enabled by default and you can run only theese commands: addgroup, removegroup, groups, group, download, help, hello. For example:
 
 ```
- > list 3
-123 >> example topic
-124 >> example topic
-125 >> example topic
+ > groups
+Your groups:
+ 1: gmane.comp.python.committers on server news.gmane.org
+ 2: test_s2.test on server test2.test
+ >
 ```
 
-`list 3` means that you want to display list of topics from group no. 3.
-
-**Second one** is dedicated to work with one group (and **it's not implemented yet**). To switch to this mode you need to run:
+**Second one** is dedicated to work with one group and operates following commands: group, list, article. To switch to this mode you need to run:
 
 ```
- > setgroup 3
+ > setgroup group_name
 Done! Turned on single-group mode for group group_name on server server_name.
  group_name >
 ```
 
-Command-line is set to work with group no. 3 named group_name (remember that server's name is not displayed in this mode). Now you can simply run:
+Command-line is set to work with group named group_name. Now you can simply run:
 
 ```
- group_name > list
+ group_name > list 3
 123 >> example topic
 124 >> example topic
 125 >> example topic
 ```
 
+`list 3` stands for 'list last 3 messages'.
+
 If you want to exit single-group mode, run:
 
 ```
-group_name > unsetgroup
+group_name > setgroup
 ```
 
 manual
@@ -121,6 +122,8 @@ Hello! :-)
  >
 ```
 
+Works in both modes.
+
 ### addgroup
 
 Adds new group.
@@ -132,6 +135,8 @@ Error! Use 'addgroup server group'
 Added new group
  >
 ```
+
+Works in both modes.
 
 ### removegroup
 
@@ -147,6 +152,8 @@ Group has been removed
  > 
 ```
 
+Works only in default-mode.
+
 ### groups
 
 Display list of groups.
@@ -161,44 +168,62 @@ Your groups:
 
 1/2/... is group's id, [c] stands for enabled cache
 
+Works in both modes.
+
 ### list
 
 Display list of topics in group.
 
 ```
- > list
-Error! Use 'list group_id' or 'list group_id start end'
- > list 1
-Displaying all cached articles (11) for group gmane.comp.python.committers on server news.gmane.org
-2429 >> Re: [Infrastructure] test suite dependencies on www.python.org
-2430 >> Re: [Infrastructure] test suite dependencies on www.python.org
-2431 >> Re: Commit privileges for Roger Serwy for IDLE
-2432 >> Re: [Infrastructure] test suite dependencies on www.python.org
-2433 >> Re: Commit privileges for Roger Serwy for IDLE
+gmane.comp.python.committers > list 3
+2441 >> Re: Commit privileges for Roger Serwy for IDLE
+2442 >> Re: Commit privileges for Roger Serwy for IDLE
+2443 >> Re: Commit privileges for Roger Serwy for IDLE
+2444 >> Re: Commit privileges for Roger Serwy for IDLE
+ gmane.comp.python.committers > list
 2434 >> Re: [Infrastructure] test suite dependencies on www.python.org
 2435 >> Re: [Infrastructure] test suite dependencies on www.python.org
 2436 >> Re: Commit privileges for Roger Serwy for IDLE
 2437 >> Re: Commit privileges for Roger Serwy for IDLE
 2438 >> Re: Commit privileges for Roger Serwy for IDLE
 2439 >> Re: Commit privileges for Roger Serwy for IDLE
- > list 1 2436 2438
-2436 >> Re: Commit privileges for Roger Serwy for IDLE
-2437 >> Re: Commit privileges for Roger Serwy for IDLE
-2438 >> Re: Commit privileges for Roger Serwy for IDLE
+2440 >> Re: Commit privileges for Roger Serwy for IDLE
+2441 >> Re: Commit privileges for Roger Serwy for IDLE
+2442 >> Re: Commit privileges for Roger Serwy for IDLE
+2443 >> Re: Commit privileges for Roger Serwy for IDLE
+2444 >> Re: Commit privileges for Roger Serwy for IDLE
+ gmane.comp.python.committers > list 2430 2435
+2430 >> Re: [Infrastructure] test suite dependencies on www.python.org
+2431 >> Re: Commit privileges for Roger Serwy for IDLE
+2432 >> Re: [Infrastructure] test suite dependencies on www.python.org
+2433 >> Re: Commit privileges for Roger Serwy for IDLE
+2434 >> Re: [Infrastructure] test suite dependencies on www.python.org
+2435 >> Re: [Infrastructure] test suite dependencies on www.python.org
  >
 ```
+
+Works only in single-group mode.
 
 ### download
 
 Downloads cache for specified group or all groups.
 
 ```
- > download
-Error! Use 'download all' or 'download group_id' or 'download server group'
+ gmane.comp.python.committers > download
+Downloading started... stay calm :-) (in case of slow downlink and big cache it may take some time)
+Done! Thanks for being patient!
+ gmane.comp.python.committers > setgroup
+ > download 1
+Downloading started... stay calm :-) (in case of slow downlink and big cache it may take some time)
+Done! Thanks for being patient!
  >
 ```
 
+If you run `download` in single-group mode (with no arguments) there will be cache downloaded for current group.
+
 You can define what should be cached (downloaded) using ... .
+
+Works in both modes.
 
 more?
 -----
