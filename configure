@@ -9,22 +9,24 @@
 for tfile in "lncmd.py" "lnio.py" "lnlib.py" "main.py" \
 			"make/2Makefile" "make/test_getpass.py" "make/test_psycopg2.py" \
 			"make/test_sqlite3.py" "make/setupdb.py" "make/test_nntplib.py" \
-			"make/test_readline.py" "make/test_sys.py"
+			"make/test_readline.py" "make/test_sys.py" "make/test_os.py"
 do
 	echo "Checking for $tfile"
-	if test -e ./$tfile ; then
-		echo "OK! $tfile exist"
-	else
+	if ! test -e ./$tfile ; then
 		echo "Cannot find $tfile"
 		exit 1
 	fi
 done
 
 echo "Checking for python"
-if hash python 2>/dev/null; then
-	echo "Python installed"
-else
+if ! hash python 2>/dev/null; then
 	echo "Cannot find python"
+	exit 1
+fi
+
+echo "Checking for make"
+if ! hash make 2>/dev/null; then
+	echo "Cannot find make"
 	exit 1
 fi
 
@@ -32,16 +34,18 @@ for mod in "getpass" "nntplib" "psycopg2" "readline" "sqlite3" "sys"
 do
 	echo "Checking for python-$mod"
 	lntest=`python make/test_$mod.py 2>/dev/null`
-	if test $lntest = "ok" ; then
-		echo "python-$mod installed"
-	else
+	if ! test $lntest = "ok" ; then
 		echo "Cannot find python-$mod"
 		exit 1
 	fi
 done
 
+echo 'Removing temporary files...'
+rm -f ./make/*.pyc
+
 echo 'Generating Makefile...'
 cp ./make/2Makefile ./Makefile
 
 echo 'Ready to install. Run `make install` to install lightnews'
+exit 0
 

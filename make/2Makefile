@@ -15,7 +15,10 @@ setupdb:
 clean:
 	@echo "Removing database..."
 	@rm -f ./ln.db
+	@rm -f /home/*/.lightnews.db
 	@echo "Removing *.pyc files..."
 	@rm -f ./*.pyc
+	@echo "Removing Makefile..."
+	@rm -f ./Makefile
 	@echo "Done"
 

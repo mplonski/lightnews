@@ -6,16 +6,21 @@
 # licence:		GNU GPL
 #
 
-#try:
-import sys, sqlite3, getpass, readline
-import lnlib, lnio, lncmd
-from psycopg2.extensions import adapt
-#except:
-#	sys.exit("Error: python libraries are not available")
+try:
+	import os, sys, sqlite3, getpass, readline
+	import lnlib, lnio, lncmd
+	from psycopg2.extensions import adapt
+except:
+	sys.exit("Error: python libraries are not available")
+
+database = os.path.expanduser("~") + "/.lightnews.db"
+if not os.path.exists(database):
+	import make.setupdb
+	make.setupdb.setupdb(database)
 
 # init!
 ut = lnlib.UsenetGroup()
-io = lnio.lnio()
+io = lnio.lnio(database)
 co = lncmd.lncmd(ut, io)
 
 print ('Hello! This program is not ready yet ;)')

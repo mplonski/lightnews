@@ -27,13 +27,21 @@ Lightnews requires:
 configuration & cleaning up
 ---------------------------
 
+To check if all necessary files / libs exist:
+
+```
+./configure
+```
+
+If everything is ok, Makefile should be generated.
+
 To setup database (create tables):
 
 ```
 make setupdb
 ```
 
-To remove database and temporary files (e.g. .pyc): 
+To remove database, temporary files (e.g. .pyc), Makefile: 
 
 ```
 make clean
