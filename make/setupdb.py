@@ -11,7 +11,8 @@ def setupdb(url):
 	c.execute('CREATE TABLE options  (name text primary key, val text)')
 	c.execute('CREATE TABLE servers  (id integer primary key, name text, username text, password text)')
 	c.execute('CREATE TABLE groups   (id integer primary key, server_id integer, name text, cache integer, count integer, first integer, last integer)')
-	c.execute('CREATE TABLE articles (id integer primary key, art_id integer, server_id integer, group_id integer, title text, body text, is_read integer)') # 0 - to read, 1 - already read
+	c.execute('CREATE TABLE articles (id integer primary key, art_id integer, server_id integer, group_id integer, title text, body text)')
+	c.execute('CREATE TABLE read_art (id integer primaty key, group_id integer, is_read integer)') # 0 -- read, 1 -- to read
 	conn.commit()
 
 	if DEBUG == 1:

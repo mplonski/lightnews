@@ -50,15 +50,26 @@ class lncmd:
 			print ("Error! Use 'group group_id' or 'group server_name group_name'")
 
 		elif cm[0] == "list" and (len(cm) == 3) and not self.singlegroup == None:
-			self.artlist(None, cm[1], cm[2])
+			self.artlist(0, None, cm[1], cm[2])
 		elif cm[0] == "list" and (len(cm) == 2) and not self.singlegroup == None:
-			self.artlist(cm[1], None, None)
+			self.artlist(0, cm[1], None, None)
 		elif cm[0] == "list" and not self.singlegroup == None:
-			self.artlist(10, None, None)
+			self.artlist(0, 10, None, None)
 		elif cm[0] == "list" and not self.singlegroup == None:
 			print("Error! Use 'list' or 'list number' or 'list start end'")
 		elif cm[0] == "list":
 			print ("Error! Command 'list' is available only in single-group mode.")
+
+		elif cm[0] == "listall" and (len(cm) == 3) and not self.singlegroup == None:
+			self.artlist(1, None, cm[1], cm[2])
+		elif cm[0] == "listall" and (len(cm) == 2) and not self.singlegroup == None:
+			self.artlist(1, cm[1], None, None)
+		elif cm[0] == "listall" and not self.singlegroup == None:
+			self.artlist(1, 10, None, None)
+		elif cm[0] == "listall" and not self.singlegroup == None:
+			print("Error! Use 'listall' or 'listall number' or 'listall start end'")
+		elif cm[0] == "list":
+			print ("Error! Command 'listall' is available only in single-group mode.")
 
 		elif cm[0] == "article" and len(cm) == 2 and not self.singlegroup == None:
 			self.article(cm[1])
@@ -121,8 +132,25 @@ class lncmd:
 			resp, count, first, last, name = self.ut.getgroup(name)
 		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
 
+	def displayarticle(self, new, art_id, topic):
+		r = self.io.isarticleread(art_id, self.singlegroup[0])
+		if new == 0:
+			if r == 0:
+				return 0
+			else:
+				print (str(art_id) + " >> " + topic)
+				return 0
+		else:
+			if r == 1:
+				bolds = "\033[1m"
+				bolde = "\033[0;0m"
+				print (str(art_id) + " >> " + bolds + topic + bolde)
+			else:
+				print (str(art_id) + " >> " + topic)
+
 	# dispalying last 10 or chosen articles in group
-	def artlist(self, number = None, start = None, end = None):
+	def artlist(self, new, number = None, start = None, end = None):
+		# new: 0 - only new, 1 - bold-new
 		try:
 			gid = self.singlegroup[0]
 			if not (start == None):
@@ -149,11 +177,11 @@ class lncmd:
 				else:
 					resp, arts = self.ut.getarticles('subject', int(last)-number, last)
 				for aid, k in arts:
-					print("%s >> %s" % (aid, k))
+					self.displayarticle(new, aid, k)
 		else:
 			print("Displaying last %s cached articles for group %s on server %s" % ( number, arts[0][3], arts[0][5] ) )
 			for k in arts[-number:]:
-				print("%s >> %s" % (k[1], k[6]))
+				self.displayarticle(new, k[1], k[6])
 
 	# getting article
 	def article(self, art):
@@ -188,6 +216,7 @@ class lncmd:
 				resp, count, first, last, name = self.ut.getgroup(name)
 				self.io.updategroup(gid, [ ["count", count], ["first", first], ["last", last] ])
 			if cache > 0:
+				# it's not very nice, TODO do it better :)
 				self.io.cleangrouparticle(gid)
 				art = [ ]
 				resp, arts = self.ut.getarticles('subject', str(int(last)-int(cache)+1), last)
