@@ -177,15 +177,11 @@ Works in both modes.
 Display list of **unread** topics in group.
 
 ```
-gmane.comp.python.committers > list 3
-2441 >> Re: Commit privileges for Roger Serwy for IDLE
+ group_name > list 3
 2442 >> Re: Commit privileges for Roger Serwy for IDLE
 2443 >> Re: Commit privileges for Roger Serwy for IDLE
 2444 >> Re: Commit privileges for Roger Serwy for IDLE
- gmane.comp.python.committers > list
-2434 >> Re: [Infrastructure] test suite dependencies on www.python.org
-2435 >> Re: [Infrastructure] test suite dependencies on www.python.org
-2436 >> Re: Commit privileges for Roger Serwy for IDLE
+ group_name > list
 2437 >> Re: Commit privileges for Roger Serwy for IDLE
 2438 >> Re: Commit privileges for Roger Serwy for IDLE
 2439 >> Re: Commit privileges for Roger Serwy for IDLE
@@ -194,14 +190,14 @@ gmane.comp.python.committers > list 3
 2442 >> Re: Commit privileges for Roger Serwy for IDLE
 2443 >> Re: Commit privileges for Roger Serwy for IDLE
 2444 >> Re: Commit privileges for Roger Serwy for IDLE
- gmane.comp.python.committers > list 2430 2435
+ group_name > list 2430 2435
 2430 >> Re: [Infrastructure] test suite dependencies on www.python.org
 2431 >> Re: Commit privileges for Roger Serwy for IDLE
 2432 >> Re: [Infrastructure] test suite dependencies on www.python.org
 2433 >> Re: Commit privileges for Roger Serwy for IDLE
 2434 >> Re: [Infrastructure] test suite dependencies on www.python.org
 2435 >> Re: [Infrastructure] test suite dependencies on www.python.org
- >
+ group_name >
 ```
 
 Works only in single-group mode.
@@ -210,15 +206,33 @@ Works only in single-group mode.
 
 Works exactly like `list`, but displays also read (and bold new ones).
 
+### article
+
+Displays body of specified article. Number next to `article` is article's id (visible after running `list`).
+
+```
+ group_name > article 2435
+
+> Body, body, body...
+> Body, body, body...
+Body, body, body...
+
+bye,
+body, body
+ group_name > 
+```
+
+Works only in single-group mode.
+
 ### download
 
 Downloads cache for specified group or all groups.
 
 ```
- gmane.comp.python.committers > download
+ group_name > download
 Downloading started... stay calm :-) (in case of slow downlink and big cache it may take some time)
 Done! Thanks for being patient!
- gmane.comp.python.committers > setgroup
+ group_name > setgroup
  > download 1
 Downloading started... stay calm :-) (in case of slow downlink and big cache it may take some time)
 Done! Thanks for being patient!
