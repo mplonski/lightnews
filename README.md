@@ -259,11 +259,11 @@ FAQ
 
 ### When are you going to release beta/stable?
 
-We love the idea of endless beta version. It should be available in some time, we're not sure exactly which day.
+We love the idea of endless beta version. It should be available in some time, we're not sure which day exactly.
 
 ### Ha ha, found bug! You suck!
 
-Please [report it](https://github.com/mplonski/lightnews/issues) and, if possible, figure out why it is not working right, fix it and commit bugfix.
+Please [report it](/mplonski/lightnews/issues) and, if possible, figure out why it is not working right, fix it and commit bugfix.
 
 ### (...) is not working
 
@@ -275,6 +275,10 @@ Please [report it](https://github.com/mplonski/lightnews/issues) and, if possibl
 ### Why don't you support Windows?
 
 We love Linux. We use Linux. Why don't you support Windows? Lightnews is under GNU GPL!
+
+### Do you like toasts?
+
+Yes, we do.
 
 more?
 -----
