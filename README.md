@@ -244,6 +244,28 @@ You can define what should be cached (downloaded) using ... .
 
 Works in both modes.
 
+FAQ
+---
+
+### When are you going to release beta/stable?
+
+We love the idea of endless beta version. It should be available in some time, we're not sure exactly which day.
+
+### Ha ha, found bug! You suck!
+
+Please [report it](https://github.com/mplonski/lightnews/issues) and, if possible, figure out why it is not working right, fix it and commit bugfix.
+
+### (...) is not working
+
+1) Check if used syntax is ok. Sometimes it's really important if you are using group's name, id or any other number.
+2) Check if this issue is known by our developers. Take a look at [issues](https://github.com/mplonski/lightnews/issues).
+3) If 1) and 2) is not helping, [report a bug](https://github.com/mplonski/lightnews/issues).
+4) After reporting bug you can figure out yourself why it is not working, fix it and commit bugfix.
+
+### Why don't you support Windows?
+
+We love Linux. We use Linux. Why don't you support Windows? Lightnews is under GNU GPL!
+
 more?
 -----
 
