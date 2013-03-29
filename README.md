@@ -27,7 +27,7 @@ Lightnews requires:
 configuration & cleaning up
 ---------------------------
 
-**Warning!** I strongly recommend running `make clean` after every update! It is quite possible that database has been changed and it's necessary to destroy old database.
+**Warning!** I strongly recommend running `make clean` after every update! It is quite possible that database has been changed and it's necessary to destroy old database. You should also run `./configure` after `make clean` to make sure that everything is ok :-)
 
 To check if all necessary files / libs exist:
 
