@@ -98,6 +98,10 @@ class lnio:
 		else:
 			return 0
 
+	def setarticleread(self, art_id, group_id):
+		self.c.execute("INSERT INTO read_art VALUES (%s, %s)" % (art_id, group_id))
+		self.conn.commit()
+
 	def addarticles(self, data):
 		# data = [ [art_id, srv_id, group_id, title, body], [ ... ] ... ]
 		if len(data) == 1:
@@ -120,4 +124,8 @@ class lnio:
 			query += ( " AND articles.art_id > %s AND articles.art_id < %s" % (start-1, end+1) )
 		self.c.execute(query)
 		return self.c.fetchall()
+
+	def getarticle(self, gid, aid):
+		self.c.execute("SELECT id, title, body FROM articles WHERE art_id = %s AND group_id = %s" % (aid, gid))
+		return self.c.fetchone()
 

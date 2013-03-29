@@ -191,6 +191,18 @@ class lncmd:
 		except:
 			print ("Error! article_id is not a number.")
 			return -1
+		dart = self.io.getarticle(gid, art)
+		if dart == None:
+			dart = self.ut.getbody(str(art))
+			dart = dart[3]
+			tmp = ""
+			for k in dart:
+				tmp += ("%s\n" % k)
+			dart = tmp
+		else:
+			dart = dart[2]
+		self.io.setarticleread(art, gid)
+		print dart
 		return 0
 
 	def download(self, cm):
@@ -230,7 +242,9 @@ class lncmd:
 		return ["q", "quit"]
 
 	def setgroup(self, group):
-		if group == None:
+		if group == None and self.singlegroup == None:
+			print ("Error! Use 'setgroup group_name'")
+		elif group == None:
 			self.singlegroup = None
 		else:
 			gis = []
@@ -239,6 +253,7 @@ class lncmd:
 					gis.append([k[0], k[1], k[2], k[3], k[4]])
 			if len(gis) == 0:
 				print("Error! Group does not exist")
+				return -1
 			elif len(gis) == 1:
 				self.singlegroup = [gis[0][0], gis[0][1], gis[0][2], gis[0][3], gis[0][4]]
 				print("Switched to single-group mode -- group %s on server %s" % (gis[0][1], gis[0][3]))
@@ -259,6 +274,7 @@ class lncmd:
 					return -1
 				self.singlegroup = [gis[g2id][0], gis[g2id][1], gis[g2id][2], gis[g2id][3], gis[g2id][4]]
 				print("Switched to single-group mode -- group %s on server %s" % (gis[g2id][1], gis[g2id][3]))
+			self.group(grid=self.singlegroup[0])
 
 	def getcmd(self):
 		return raw_input(" > " if self.singlegroup == None else (" %s > " % (self.singlegroup[1])) )
