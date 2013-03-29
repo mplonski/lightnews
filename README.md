@@ -4,7 +4,14 @@ lightnews
 light usenet client
 
 * [version](#version)
-* test
+* [requirements](#requirements)
+* [configuration & cleaning up](#configuration--cleaning-up)
+* [packages](#packages)
+* [user interface](#user-interface)
+* [default mode and single-group mode](#default-mode-and-single-group-mode)
+* [manual](#manual)
+* [faq](#faq)
+* [more](#more)
 
 version
 --------
@@ -75,7 +82,7 @@ Lightnews is operated in command-line style.
 default mode and single-group mode
 ----------------------------------
 
-As you can see at [user interface](https://github.com/mplonski/lightnews#user-interface) lightnews is operated in command-like style. There're two possible options of command-line.
+As you can see at [user interface](#user-interface) lightnews is operated in command-like style. There're two possible options of command-line.
 
 **First one** is enabled by default and you can run only theese commands: addgroup, removegroup, groups, group, download, help, hello. For example:
 
@@ -261,8 +268,8 @@ Please [report it](https://github.com/mplonski/lightnews/issues) and, if possibl
 ### (...) is not working
 
 1) Check if used syntax is ok. Sometimes it's really important if you are using group's name, id or any other number.
-2) Check if this issue is known by our developers. Take a look at [issues](https://github.com/mplonski/lightnews/issues).
-3) If 1) and 2) is not helping, [report a bug](https://github.com/mplonski/lightnews/issues).
+2) Check if this issue is known by our developers. Take a look at [issues](/mplonski/lightnews/issues).
+3) If 1) and 2) is not helping, [report a bug](/mplonski/lightnews/issues).
 4) After reporting bug you can figure out yourself why it is not working, fix it and commit bugfix.
 
 ### Why don't you support Windows?
