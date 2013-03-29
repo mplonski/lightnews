@@ -11,7 +11,6 @@ light usenet client
 * [default mode and single-group mode](#default-mode-and-single-group-mode)
 * [manual](#manual)
 * [faq](#faq)
-* [more](#more)
 
 version
 --------
@@ -279,9 +278,4 @@ We love Linux. We use Linux. Why don't you support Windows? Lightnews is under G
 ### Do you like toasts?
 
 Yes, we do.
-
-more?
------
-
-will be something (soon)
 
