@@ -7,6 +7,7 @@
 #
 
 from psycopg2.extensions import adapt
+import getpass
 
 class lncmd:
 	def __init__(self, ut, io):
@@ -91,13 +92,81 @@ class lncmd:
 			self.setgroup(None)
 
 		elif cm[0] == "help":
-			print("Will be one day...")
+			print("Will be one day... take a look at https://github.com/mplonski/lightnews")
 				
 	def hello(self):
 		print("Hello! :-)")
 
+	def askforauth(self, tmp):
+		if not int(tmp) == 0:
+			return [None, None]
+		print("Authorisation to this server is required!")
+		username = raw_input("Username [%s]: " % (getpass.getuser()))
+		if username == "":
+			username = getpass.getuser()
+		password = getpass.getpass()
+		return [username, password]
+
+	def auth(self, server = None, sid = None, group = None, gid = None):
+		if (server == None) and (sid == None) and (not gid == None):
+			sid, server, sauth = self.io.getserver(gid=gid)
+		elif not ((server == None) and (sid == None)):
+			sid, server, sauth = self.io.getserver(sid=sid, server=server)
+
+		if not ((group == None) and (gid == None)):
+			gr = self.io.getgroup(server=server, group=group, gid=gid)
+			gid = gr[0]
+			group = gr[1]
+
+		# just checking if connection is up
+		if server == None and group == None and sid == None and gid == None:
+			if not self.ut.isconnected(): # it's not
+				group = self.ut.getgroupname()
+				server = self.ut.getservername()
+				sid, server, sauth = self.io.getserver(server=server)
+				gr = self.io.getgroup(server=server, group=group)
+
+				suser, spass = self.askforauth(sauth)
+				self.ut.connect(self.ut.getservername(), suser, spass)
+				return 0
+			else: # it's up, don't worry, be happy
+				return 0
+		# connecting to specified server
+		else:
+			tmp = self.ut.isconnected()
+			# not connected or connected to other server
+			if (not tmp) or (tmp and not self.ut.getservername() == server):
+				suser, spass = self.askforauth(sauth)
+				self.ut.connect(server, suser, spass)
+			# if group is set and (not connected or connected to other group)
+			if (not group == None) and ((not tmp) or (tmo and not self.ut.getgroupname() == group)):
+				self.ut.getgroup(group)
+		return 0
+
+	def addserver(self, server):
+		if not self.io.getserver(server=server) == None:
+			return 1
+		ans = ["y", "n", "Y", "N"]
+		auth = None
+		while not (auth in ans):
+			auth = raw_input ("Is auth to this server required? [Y/n] ")
+		if (auth == "y") or (auth == "Y"):
+			auth = 0
+		else:
+			auth = 1
+		self.io.addserver(server, auth)
+
 	def addgroup(self, server, group):
-		self.io.addgroup(server, group)
+		if self.io.getserver(server=server) == None:
+			self.addserver(server)
+
+		cache = raw_input ("How many articles are to be cached? (0 means none) ")
+		try:
+			cache = int(cache)
+		except:
+			print ("%s is not a number. Saving 0.")
+			cache = 0
+		self.io.addgroup(server, group, cache)
 		print("Added new group")
 
 	def removegroup(self, server, group):
@@ -127,8 +196,7 @@ class lncmd:
 		# yupi, group exists!
 		gid, name, sid, server, cache, count, first, last = dgroup
 		if cache == -1:
-			if not self.ut.getservername() == server:
-				self.ut.connect(server)
+			self.auth(server=server)
 			resp, count, first, last, name = self.ut.getgroup(name)
 		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
 
@@ -168,10 +236,8 @@ class lncmd:
 			if self.singlegroup[4] > 0:
 				print("Group is empty")
 			else:
-				if not self.ut.getservername() == group[3]:
-					self.ut.connect(group[3])
-				if not self.ut.getgroupname() == group[1]:
-					resp, count, first, last, name = self.ut.getgroup(group[1])
+				self.auth(server = group[3], group = group[1])
+				resp, count, first, last, name = self.ut.getgroup(group[1])
 				if number == None:
 					resp, arts = self.ut.getarticles('subject', start, end)
 				else:
@@ -193,6 +259,7 @@ class lncmd:
 			return -1
 		dart = self.io.getarticle(gid, art)
 		if dart == None:
+			self.auth(gid=gid)
 			dart = self.ut.getbody(str(art))
 			dart = dart[3]
 			tmp = ""
@@ -223,8 +290,7 @@ class lncmd:
 		for g in groups:
 			gid, name, sid, server, cache, count, first, last = g
 			if cache > -1:
-				if not self.ut.getservername() == server:
-					self.ut.connect(server)
+				self.auth(server = server)
 				resp, count, first, last, name = self.ut.getgroup(name)
 				self.io.updategroup(gid, [ ["count", count], ["first", first], ["last", last] ])
 			if cache > 0:
@@ -277,5 +343,5 @@ class lncmd:
 			self.group(grid=self.singlegroup[0])
 
 	def getcmd(self):
-		return raw_input(" > " if self.singlegroup == None else (" %s > " % (self.singlegroup[1])) )
+		return raw_input("\n > " if self.singlegroup == None else ("\n %s > " % (self.singlegroup[1])) )
 

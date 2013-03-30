@@ -34,22 +34,21 @@ class lnio:
 		self.c.execute("SELECT groups.id, groups.name, servers.id, servers.name, groups.cache FROM groups LEFT JOIN servers ON groups.server_id = servers.id")
 		return self.c.fetchall()
 
-	def addgroup(self, server, group):
+	def addserver(self, server, auth):
+		self.c.execute("INSERT INTO servers VALUES (NULL, '%s', %s)" % (server, sauth))
+		self.conn.commit()
+
+	def addgroup(self, server, group, cache):
 		# checking if server exists...
 		self.c.execute("SELECT * FROM servers WHERE name = '%s'" % server)
 		ser = self.c.fetchone()
-		if ser == None:
-			self.c.execute("INSERT INTO servers VALUES (NULL, '%s', NULL, NULL)" % server)
-			self.conn.commit()
-			self.c.execute("SELECT * FROM servers WHERE name = '%s'" % server)
-			ser = self.c.fetchone()
 		sid = ser[0]
 
 		# checking if group exists...
 		self.c.execute("SELECT * FROM groups WHERE name = '%s' AND server_id = %s" % (group, sid))
 		ser = self.c.fetchone()
 		if ser == None:
-			self.c.execute("INSERT INTO groups VALUES (NULL, %s, '%s', 0, 0, 0, 0)" % (sid, group))
+			self.c.execute("INSERT INTO groups VALUES (NULL, %s, '%s', %s, 0, 0, 0)" % (sid, group, cache))
 			self.conn.commit()
 		return 0
 
@@ -64,6 +63,19 @@ class lnio:
 			self.conn.commit()
 			self.cleangrouparticle(gid)
 		return 0
+
+	def getserver(self, sid = None, server = None, gid = None):
+		if sid == None and gid == None:
+			self.c.execute("SELECT servers.id, servers.name, servers.auth FROM servers WHERE name = '%s'" % (server))
+		elif gid == None:
+			self.c.execute("SELECT servers.id, servers.name, servers.auth FROM servers WHERE id = %s" % (sid))
+		else:
+			self.c.execute("SELECT servers.id, servers.name, servers.auth FROM servers LEFT JOIN groups ON servers.id = groups.server_id WHERE groups.id = %s" % gid)
+		ser = self.c.fetchone()
+		if ser == None:
+			return None
+		else:
+			return ser
 
 	def getgroup(self, server = None, group = None, gid = None):
 		if not gid == None:

@@ -29,6 +29,7 @@ class UsenetGroup:
 	def disconnect (self):
 		self.ins.quit()
 		self.ins = None
+		self.server = None
 		self.group = None
 
 	def getwelcome (self):
