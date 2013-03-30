@@ -260,7 +260,7 @@ FAQ
 
 We love the idea of endless beta version. It should be available in some time, we're not sure which day exactly.
 
-### Ha ha, found bug! You suck!
+### Ha ha, I found bug! You suck!
 
 Please [report it](/mplonski/lightnews/issues) and, if possible, figure out why it is not working right, fix it and commit bugfix.
 
