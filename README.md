@@ -249,9 +249,37 @@ Done! Thanks for being patient!
 
 If you run `download` in single-group mode (with no arguments) there will be cache downloaded for current group.
 
-You can define what should be cached (downloaded) using ... .
+You can define what should be cached (downloaded) using `setcache`.
 
 Works in both modes.
+
+### setcache
+
+Sets cache for exisiting group.
+
+```
+ > groups
+Your groups:
+ 1: [c] gmane.comp.python.committers on server news.gmane.org
+ 2: test_s2.test on server test2.test
+
+ > setcache 1
+How many articles are to be cached? (0 means none) 10
+Done!
+
+ >
+```
+
+### setauth
+
+Sets auth settings for existing server.
+
+```
+ > setauth news.gmane.org
+Is auth required? [Y/n] n
+Done!
+ > 
+```
 
 FAQ
 ---

@@ -41,6 +41,20 @@ class lncmd:
 		elif cm[0] == "groups":
 			self.listgroups()
 
+		elif cm[0] == "setauth" and len(cm) == 2:
+			self.setauth(server=cm[1])
+		elif cm[0] == "setauth":
+			print ("Error! Use 'setauth server_name'")
+
+		elif cm[0] == "setcache" and len(cm) == 1 and not self.singlegroup == None:
+			self.setcache(gid=self.singlegroup[0])
+		elif cm[0] == "setcache" and len(cm) == 2:
+			self.setcache(gid=cm[1])
+		elif cm[0] == "setcache" and len(cm) == 3:
+			self.setcache(server=cm[1], group=cm[2])
+		elif cm[0] == "setcache":
+			print ("Error! Use 'setcache' in single-group mode or 'setcache group_id'")
+
 		elif cm[0] == "group" and len(cm) == 3:
 			self.group(gserver=cm[1], ggroup=cm[2])
 		elif cm[0] == "group" and len(cm) == 2:
@@ -164,10 +178,46 @@ class lncmd:
 		try:
 			cache = int(cache)
 		except:
-			print ("%s is not a number. Saving 0.")
+			print ("%s is not a number, saving 0.")
 			cache = 0
 		self.io.addgroup(server, group, cache)
 		print("Added new group")
+
+	def setcache(self, server = None, group = None, gid = None):
+		if not gid == None:
+			try:
+				gid = int(gid)
+			except:
+				print ("Selected group_id (%s) is not a number!" % (gid))
+				return 1
+		gr = self.io.getgroup(server=server, group=group, gid=gid)
+		if gr == None:
+			print ("Error! Group not found!")
+			return 1
+		cache = raw_input ("How many articles are to be cached? (0 means none) ")
+		try:
+			cache = int(cache)
+		except:
+			print ("%s is not a number, saving 0.")
+			cache = 0
+		self.io.updategroupcache(gr[0], cache)
+		print ("Done!")
+
+	def setauth(self, server = None, group = None, gid = None):
+		ser = self.io.getserver(server=server, group=group, gid=gid)
+		if ser == None:
+			print ("Error! Server not found!")
+			return 1
+		ans = ["y", "n", "Y", "N"]
+		auth = None
+		while not (auth in ans):
+			auth = raw_input ("Is auth required? [Y/n] ")
+		if (auth == "y") or (auth == "Y"):
+			auth = 0
+		else:
+			auth = 1
+		self.io.updateserver(ser[0], auth)
+		print ("Done!")
 
 	def removegroup(self, server, group):
 		self.io.removegroup(server, group)
@@ -198,7 +248,10 @@ class lncmd:
 		if cache == -1:
 			self.auth(server=server)
 			resp, count, first, last, name = self.ut.getgroup(name)
+			cache = None
 		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
+		if not cache == None and cache > 0:
+			print ("Cache is enabled for last %s articles" % cache)
 
 	def displayarticle(self, new, art_id, topic):
 		r = self.io.isarticleread(art_id, self.singlegroup[0])

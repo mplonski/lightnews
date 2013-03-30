@@ -52,6 +52,14 @@ class lnio:
 			self.conn.commit()
 		return 0
 
+	def updategroupcache(self, gid, cache):
+		self.c.execute("UPDATE groups SET cache = %s WHERE id = %s" % (cache, gid))
+		self.conn.commit()
+
+	def updateserver(self, sid, auth):
+		self.c.execute("UPDATE servers SET auth = %s WHERE id = %s" % (auth, sid))
+		self.conn.commit()
+
 	def removegroup(self, server, group):
 		self.c.execute("SELECT groups.id FROM groups LEFT JOIN servers ON groups.server_id = servers.id WHERE groups.name='%s' AND servers.name='%s'" % (group, server))
 		rg = self.c.fetchall()
@@ -64,13 +72,13 @@ class lnio:
 			self.cleangrouparticle(gid)
 		return 0
 
-	def getserver(self, sid = None, server = None, gid = None):
-		if sid == None and gid == None:
+	def getserver(self, sid = None, server = None, group = None, gid = None):
+		if not sid == None:
+			self.c.execute("SELECT servers.id, server.name, servers.auth FROM servers WHERE id = %s" % sid)
+		elif not server == None:
 			self.c.execute("SELECT servers.id, servers.name, servers.auth FROM servers WHERE name = '%s'" % (server))
-		elif gid == None:
-			self.c.execute("SELECT servers.id, servers.name, servers.auth FROM servers WHERE id = %s" % (sid))
 		else:
-			self.c.execute("SELECT servers.id, servers.name, servers.auth FROM servers LEFT JOIN groups ON servers.id = groups.server_id WHERE groups.id = %s" % gid)
+			self.c.execute("SELECT servers.id, servers.name, servers.auth FROM servers LEFT JOIN groups ON groups.server_id = servers.id WHERE groups.id = %s" % gid)
 		ser = self.c.fetchone()
 		if ser == None:
 			return None
