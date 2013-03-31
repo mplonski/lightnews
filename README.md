@@ -27,7 +27,7 @@ changelog
 ---------
 
 Mar 31, 2013
- - release 1.0 beta ([commit](/mplonski/lightnews/commit/95038ab5d432e7fcf5865c190c070602f24dc174) :: [with bugfixes](/mplonski/lightnews/commit/be43f1b3c319da72838cad7145a435a96437e2b6))
+ - release 1.0 beta ([commit with bugfixes](/mplonski/lightnews/commit/be43f1b3c319da72838cad7145a435a96437e2b6))
 
 Mar 11, 2013
  - first commit
