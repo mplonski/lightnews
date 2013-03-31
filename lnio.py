@@ -19,7 +19,6 @@ class lnio:
 	def getoption(self, name):
 		self.c.execute("SELECT * FROM options WHERE name = '%s'" % name)
 		opt = self.c.fetchone()
-		print opt
 		if opt == None:
 			return None
 		else:

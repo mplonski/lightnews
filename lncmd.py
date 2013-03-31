@@ -438,7 +438,6 @@ class lncmd:
 		os.remove( fname % (tmp, i) )
 
 	def setfrom(self, wfrom):
-		print self.io.getoption('from')
 		self.io.setoption('from', wfrom)
 		print("Done!")
 
