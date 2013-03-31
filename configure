@@ -1,6 +1,6 @@
 #! /bin/bash
 # name:			lightnews ./configure
-# version:		alpha
+# version:		1.0 beta
 # description:	script for lightnews checking necessary libs
 # authors:		mplonski / maciej plonski / sokoli.pl
 # 				ksx4system / ksx4system.net
