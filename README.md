@@ -316,10 +316,10 @@ Please [report it](/mplonski/lightnews/issues) and, if possible, figure out why 
 
 ### (...) is not working
 
-1) Check if used syntax is ok. Sometimes it's really important if you are using group's name, id or any other number.
-2) Check if this issue is known by our developers. Take a look at [issues](/mplonski/lightnews/issues).
-3) If 1) and 2) is not helping, [report a bug](/mplonski/lightnews/issues).
-4) After reporting bug you can figure out yourself why it is not working, fix it and commit bugfix.
+1. Check if used syntax is ok. Sometimes it's really important if you are using group's name, id or any other number.
+2. Check if this issue is known by our developers. Take a look at [issues](/mplonski/lightnews/issues).
+3. If 1. and 2. is not helping, [report a bug](/mplonski/lightnews/issues).
+4. After reporting bug you can figure out yourself why it is not working, fix it and commit bugfix.
 
 ### Why don't you support Windows?
 
