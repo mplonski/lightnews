@@ -38,7 +38,7 @@ class lnio:
 		self.c.execute("SELECT groups.id, groups.name, servers.id, servers.name, groups.cache FROM groups LEFT JOIN servers ON groups.server_id = servers.id")
 		return self.c.fetchall()
 
-	def addserver(self, server, auth):
+	def addserver(self, server, sauth):
 		self.c.execute("INSERT INTO servers VALUES (NULL, '%s', %s)" % (server, sauth))
 		self.conn.commit()
 
