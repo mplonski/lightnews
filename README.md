@@ -1,4 +1,4 @@
-lightnews
+Lightnews
 =========
 
 light usenet client
@@ -231,6 +231,24 @@ body, body
 ```
 
 Works only in single-group mode.
+
+### send
+
+Sends message to list.
+
+*Warning!* You need to set `setfrom` before running `send`.
+
+### setfrom
+
+Sets From Field in sent messages (doesn't work in past).
+
+```
+ > setfrom mail@example.com
+Done!
+ >
+```
+
+Works in both modes.
 
 ### download
 

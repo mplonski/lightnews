@@ -16,6 +16,7 @@ def setupdb(url):
 	conn.commit()
 
 	if DEBUG == 1:
+		c.execute("INSERT INTO options VALUES ('from', 'm.plonski@sokoli.pl')")
 		c.execute("INSERT INTO servers VALUES (NULL, 'news.gmane.org', 1)")
 		c.execute("INSERT INTO groups VALUES (NULL, 1, 'gmane.comp.python.committers', 5, 0, 0, 0)")
 		c.execute("INSERT INTO servers VALUES (NULL, 'test2.test', 1)")

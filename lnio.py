@@ -19,6 +19,7 @@ class lnio:
 	def getoption(self, name):
 		self.c.execute("SELECT * FROM options WHERE name = '%s'" % name)
 		opt = self.c.fetchone()
+		print opt
 		if opt == None:
 			return None
 		else:
@@ -26,7 +27,11 @@ class lnio:
 		return 0
 
 	def setoption(self, name, val):
-		self.c.execute("UPDATE options SET val = '%s' WHERE name = '%s'" % (val, name))
+		self.c.execute("SELECT * FROM options WHERE name = '%s'" % (name))
+		if self.c.fetchone() == None:
+			self.c.execute("INSERT INTO options VALUES ('%s', '%s')" % (name, val))
+		else:
+			self.c.execute("UPDATE options SET val = '%s' WHERE name = '%s'" % (val, name))
 		self.conn.commit()
 		return 0
 

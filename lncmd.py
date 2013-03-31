@@ -8,6 +8,12 @@
 
 from psycopg2.extensions import adapt
 import getpass
+import hashlib
+import time
+import socket
+import sys
+import tempfile
+import os
 
 class lncmd:
 	def __init__(self, ut, io):
@@ -25,6 +31,11 @@ class lncmd:
 
 		if cm[0] == "hello":
 			self.hello()
+
+		elif cm[0] == "setfrom" and len(cm) == 2:
+			self.setfrom(cm[1])
+		elif cm[0] == "setfrom":
+			print ("Error! Use 'setfrom name@example.com'")
 
 		elif cm[0] == "addgroup" and len(cm) == 3:
 			self.addgroup(cm[1], cm[2])
@@ -160,7 +171,7 @@ class lncmd:
 				suser, spass = self.askforauth(sauth)
 				self.ut.connect(server, suser, spass)
 			# if group is set and (not connected or connected to other group)
-			if (not group == None) and ((not tmp) or (tmo and not self.ut.getgroupname() == group)):
+			if (not group == None) and ((not tmp) or (tmp and not self.ut.getgroupname() == group)):
 				self.ut.getgroup(group)
 		return 0
 
@@ -365,7 +376,71 @@ class lncmd:
 		print("Done! Thanks for being patient!")
 
 	def sendart(self, aid = None):
-		return(":)")
+		topic = None
+		msubject = ""
+		if not aid == None:
+			try:
+				aid = int(aid)
+			except:
+				print("Error! %s seems not to be a number")
+				return 1
+			self.auth(gid=self.singlegroup[0])
+			art = self.ut.getarticles('subject', aid, aid)[1]
+			if len(art) == 0:
+				print("Error! Cannot find article no. %s" % aid)
+				return 1
+			topic = art[0][1]
+		group = self.singlegroup[1]
+		server = self.singlegroup[3]
+		ask = "Topic: " if topic == None else ("Topic [Re: %s]: " % topic)
+		while (msubject == ""):
+			msubject = raw_input(ask)
+			if msubject == "" and not topic == None:
+				msubject = ("Re: %s" % topic)
+		mfrom = self.io.getoption('from')
+		if mfrom == None:
+			print("Error! Firstly set option from")
+			return 1
+		mid = ("%s@%s" % (hashlib.sha224("%sRnD%s" % ( time.time(), socket.gethostname() ) ).hexdigest(), socket.gethostname() ))
+		mdate = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
+		print("Text: (Ctrl+D to finish)")
+		mcontent = sys.stdin.readlines()
+
+		tmp = tempfile.gettempdir()
+		if tmp == None:
+			tmp = "/tmp"
+		k = 0
+		i = 0
+		while (k == 0):
+			try:
+				f = open( ("%s/lightnews-message%s" % (tmp, i) ), 'r')
+				i += 1
+			except IOError:
+				k = 1
+			else:
+				f.close()
+		fname = "%s/lightnews-message%s" % (tmp, i)
+		f = open(fname, 'w')
+		f.write("From: %s\n" % mfrom)
+		f.write("Date: %s\n" % mdate)
+		f.write("Newsgroups: %s\n" % group)
+		f.write("Subject: %s\n" % msubject)
+		f.write("Message-ID: %s\n" % mid)
+		f.write("Path: %s!\n" % server)
+		f.write("User-Agent: Lightnews\n")
+		for k in mcontent:
+			f.write(k)
+		f.close()
+		
+		self.auth(gid=self.singlegroup[0])
+		self.ut.post( fname % (tmp, i) )
+
+		os.remove( fname % (tmp, i) )
+
+	def setfrom(self, wfrom):
+		print self.io.getoption('from')
+		self.io.setoption('from', wfrom)
+		print("Done!")
 
 	def getend(self):
 		return ["q", "quit"]
