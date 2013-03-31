@@ -93,6 +93,13 @@ class lncmd:
 		elif cm[0] == "article":
 			print("Error! Command 'article' is available only in single-group mode.")
 
+		elif cm[0] == "send" and len(cm) == 2 and not self.singlegroup == None:
+			self.sendart(cm[1])
+		elif cm[0] == "send" and not self.singlegroup == None:
+			self.sendart(None)
+		elif cm[0] == "send":
+			print("Error! Usage 'send' or 'send art_id'. Available only in group mode.")
+
 		elif cm[0] == "download" and ( (len(cm) == 2) or (len(cm) == 3) ):
 			self.download(cm)
 		elif cm[0] == "download" and not self.singlegroup == None:
@@ -356,6 +363,9 @@ class lncmd:
 					art.append( [aid, sid, gid, sub, body ] )
 				self.io.addarticles(art)
 		print("Done! Thanks for being patient!")
+
+	def sendart(self, aid = None):
+		return(":)")
 
 	def getend(self):
 		return ["q", "quit"]
