@@ -121,7 +121,7 @@ group_name > setgroup
 manual
 ------
 
-# it's not ready yet :) #
+### beta release -- manual should be up-to-date ###
 
 ### hello
 
@@ -236,7 +236,11 @@ Works only in single-group mode.
 
 Sends message to list.
 
+Usage: `send` to send message, `send art_id` to send answer to some mail.
+
 *Warning!* You need to set `setfrom` before running `send`.
+
+Works only in single-group mode.
 
 ### setfrom
 
@@ -302,9 +306,9 @@ Done!
 FAQ
 ---
 
-### When are you going to release beta/stable?
+### When are you going to release stable?
 
-We love the idea of endless beta version. It should be available in some time, we're not sure which day exactly.
+We love the idea of endless beta version. How could you know that any software is fully stable?
 
 ### Ha ha, I found bug! You suck!
 
