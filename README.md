@@ -238,7 +238,7 @@ Sends message to list.
 
 Usage: `send` to send message, `send art_id` to send answer to some mail.
 
-*Warning!* You need to set `setfrom` before running `send`.
+**Warning!** You need to set `setfrom` before running `send`.
 
 Works only in single-group mode.
 
