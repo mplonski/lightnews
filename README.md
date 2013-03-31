@@ -15,7 +15,7 @@ light usenet client
 version
 --------
 
-Lightnews is in prealpha version! (I hope it will be ready in... 1 week?)
+Lightnews is in 1.0 beta version!
 
 ```python
 def behappy():
@@ -29,7 +29,7 @@ Lightnews requires:
 
 * Linux (you can modify code to be able to run it on Windows, but we officially support only Linux)
 * python (lightnews is tested on python 2.7, 3.0 should be also ok)
-* python libraries: os, sys, nntplib, sqlite3, getpass, readline, psycopg2
+* python libraries: sys, os, time, nntplib, sqlite3, ycopg2.extensions, getpass, hashlib, socket, tempfile, getpass, readline
 * lightnews libraries: lnlin, lnio, lncmd (included in repository)
 * linux program: Makefile (required to run setup/cleaning automatically)
 
