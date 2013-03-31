@@ -426,7 +426,7 @@ class lncmd:
 		f.write("Newsgroups: %s\n" % group)
 		f.write("Subject: %s\n" % msubject)
 		f.write("Message-ID: %s\n" % mid)
-		f.write("Path: %s!\n" % server)
+		f.write("Path: %s\n" % server)
 		f.write("User-Agent: Lightnews\n")
 		for k in mcontent:
 			f.write(k)
