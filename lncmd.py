@@ -444,12 +444,32 @@ class lncmd:
 	def getend(self):
 		return ["q", "quit"]
 
+	def quit(self):
+		if self.ut.isconnected():
+			self.ut.disconnect()
+
 	def setgroup(self, group):
 		if group == None and self.singlegroup == None:
 			print ("Error! Use 'setgroup group_name'")
 		elif group == None:
 			self.singlegroup = None
 		else:
+			try:
+				group = int(group)
+				n = 0
+				for k in self.groups:
+					if k[0] == group:
+						self.singlegroup = [k[0], k[1], k[2], k[3], k[4]]
+					if self.singlegroup == None:
+						n += 1
+				if self.singlegroup == None:
+					print("Error! Group does not exist")
+					return 1
+				print("Switched to single-group mode -- group %s on server %s" % (self.groups[n][1], self.groups[n][3]))
+				self.group(grid=self.singlegroup[0])
+				return 0
+			except:
+				pass
 			gis = []
 			for k in self.groups:
 				if k[1] == group:
