@@ -124,7 +124,7 @@ class lncmd:
 			self.setgroup(None)
 
 		elif cm[0] == "help":
-			print("Will be one day... take a look at https://github.com/mplonski/lightnews")
+			print("Sorry, no help available in release 1.0 beta. Take a look at manual -- https://github.com/mplonski/lightnews")
 				
 	def hello(self):
 		print("Hello! :-)")
