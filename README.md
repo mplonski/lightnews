@@ -175,6 +175,21 @@ Group has been removed
 
 Works only in default-mode.
 
+### glist
+
+Display list of groups on server matching pattern.
+
+```
+ > glist news.gmane.org pidgin
+Please wait...
+gmane.comp.gnome.pidgin.user [flags: m]
+gmane.comp.gnome.pidgin.msn-pecan [flags: m]
+gmane.comp.gnome.pidgin.announce [flags: m]
+ >
+```
+
+Works in both modes.
+
 ### groups
 
 Display list of groups.

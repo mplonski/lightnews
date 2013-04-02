@@ -40,6 +40,12 @@ class lncmd:
 		elif cm[0] == "setfrom":
 			print ("Error! Use 'setfrom name@example.com'")
 
+		# search for groups
+		elif cm[0] == "glist" and len(cm) == 3:
+			self.getgrouplist(cm[1], cm[2])
+		elif cm[0] == "glist":
+			print ("Error! Use 'glist server pattern'")
+
 		# adds group
 		elif cm[0] == "addgroup" and len(cm) == 3:
 			self.addgroup(cm[1], cm[2])
@@ -193,6 +199,23 @@ class lncmd:
 			if (not group == None) and ((not tmp) or (tmp and not self.ut.getgroupname() == group)):
 				self.ut.getgroup(group)
 		return 0
+
+	# get list of group
+	def getgrouplist(self, server, pattern):
+		print("Please wait...")
+		self.auth(server=server)
+		gr = self.ut.getlist()[1]
+		if len(gr) == 0:
+			print("Error! No groups available on this server")
+			return 0
+		# TODO: is it the best way? what about regex?
+		i = 0
+		for g in gr:
+			if pattern in g[0]:
+				print("%s [flags: %s]" % (g[0], g[3]))
+				i = 1
+		if i == 0:
+			print("Sorry, no groups found matching '%s'." % pattern)
 
 	# adds server
 	def addserver(self, server):
