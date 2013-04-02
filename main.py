@@ -11,7 +11,7 @@ try:
 	from psycopg2.extensions import adapt
 	import getpass, hashlib, time, socket
 	import sys, tempfile, os, sqlite3, nntplib
-	import getpass, readline
+	import getpass, readline, random
 	import lnlib, lnio, lncmd
 except:
 	sys.exit("Error: python libraries are not available")

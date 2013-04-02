@@ -28,7 +28,7 @@ for tfile in "lncmd.py" "lnio.py" "lnlib.py" "main.py" \
 			"make/test_sqlite3.py" "make/setupdb.py" "make/test_nntplib.py" \
 			"make/test_readline.py" "make/test_sys.py" "make/test_os.py" \
 			"make/test_hashlib.py" "make/test_time.py" "make/test_socket.py" \
-			"make/test_tempfile.py"
+			"make/test_tempfile.py" "make/test_random.py"
 do
 	echo "Checking for $tfile"
 	if ! test -e ./$tfile ; then
@@ -50,7 +50,7 @@ if ! hash make 2>/dev/null; then
 fi
 
 for mod in "hashlib" "os" "readline" "sqlite3" "tempfile" "getpass" "nntplib" \
-  			"psycopg2" "socket" "sys" "time"
+  			"psycopg2" "socket" "sys" "time" "random"
 do
 	echo "Checking for python-$mod"
 	lntest=`python make/test_$mod.py 2>/dev/null`
