@@ -8,6 +8,8 @@
 
 from psycopg2.extensions import adapt
 import getpass
+import nntplib
+import random
 import hashlib
 import time
 import socket
@@ -233,8 +235,7 @@ class lncmd:
 
 	# adds group
 	def addgroup(self, server, group):
-		if self.io.getserver(server=server) == None:
-			self.addserver(server)
+		self.addserver(server)
 
 		cache = raw_input ("How many articles are to be cached? (0 means none) ")
 		try:
@@ -434,18 +435,28 @@ class lncmd:
 				self.io.addarticles(art)
 		print("Done! Thanks for being patient!")
 
+	def genmsgid(self):
+		mid = ("%s@%s" % (hashlib.sha224("%sRn%sD%s" % ( time.time(), random.randint(0, 999999999999), socket.gethostname() ) ).hexdigest(), socket.gethostname() ))
+		try:
+			self.ut.getarticle('<%s>' % mid)
+		except nntplib.NNTPTemporaryError as e:
+			print e
+			if int(str(e).split(" ")[0]) == 430:
+				return mid
+		return self.genmsgid()
+
 	# send article
 	def sendart(self, aid = None):
 		topic = None
 		msubject = ""
 		# if you're responding to some post
+		self.auth(gid=self.singlegroup[0])
 		if not aid == None:
 			try:
 				aid = int(aid)
 			except:
 				print("Error! %s seems not to be a number")
 				return 1
-			self.auth(gid=self.singlegroup[0])
 			art = self.ut.getarticles('subject', aid, aid)[1]
 			if len(art) == 0:
 				print("Error! Cannot find article no. %s" % aid)
@@ -470,7 +481,7 @@ class lncmd:
 				msubject = ("Re: %s" % topic)
 
 		# geting all required options -- msg-id, date, content
-		mid = ("%s@%s" % (hashlib.sha224("%sRnD%s" % ( time.time(), socket.gethostname() ) ).hexdigest(), socket.gethostname() ))
+		mid = self.genmsgid()
 		mdate = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
 		print("Text: (Ctrl+D to finish)")
 		mcontent = sys.stdin.readlines()
@@ -497,7 +508,7 @@ class lncmd:
 		f.write("Date: %s\n" % mdate)
 		f.write("Newsgroups: %s\n" % group)
 		f.write("Subject: %s\n" % msubject)
-		f.write("Message-ID: %s\n" % mid)
+		f.write("Message-ID: <%s>\n" % mid)
 		f.write("Path: %s\n" % server)
 		f.write("User-Agent: Lightnews\n")
 		for k in mcontent:

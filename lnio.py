@@ -112,7 +112,6 @@ class lnio:
 	def addserver(self, server, sauth):
 		self.c.execute("INSERT INTO servers VALUES (NULL, '%s', %s)" % (server, sauth))
 		self.conn.commit()
-		self.cleandb()
 
 	# add group
 	def addgroup(self, server, group, cache):
