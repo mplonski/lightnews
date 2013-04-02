@@ -240,7 +240,7 @@ class lncmd:
 		except:
 			print ("%s is not a number, saving 0.")
 			cache = 0
-		self.io.updategroupcache(gr[0], cache)
+		self.io.updategroup(gr[0], [ ['cache', cache] ])
 		print ("Done!")
 
 	# sets auth for existing server

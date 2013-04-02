@@ -70,11 +70,6 @@ class lnio:
 		# whoops, it does
 		return 1
 
-	# update cache option
-	def updategroupcache(self, gid, cache):
-		self.c.execute("UPDATE groups SET cache = %s WHERE id = %s" % (cache, gid))
-		self.conn.commit()
-
 	# update auth option
 	def updateserver(self, sid, auth):
 		self.c.execute("UPDATE servers SET auth = %s WHERE id = %s" % (auth, sid))
