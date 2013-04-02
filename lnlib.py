@@ -8,6 +8,8 @@
 
 import nntplib
 
+# need help? http://docs.python.org/2/library/nntplib.html :)
+
 class UsenetGroup:
 	def __init__(self):
 		self.ins = None

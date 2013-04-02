@@ -6,6 +6,7 @@
 # licence:		GNU GPL
 #
 
+# try to load necessary modules
 try:
 	from psycopg2.extensions import adapt
 	import getpass, hashlib, time, socket
@@ -15,6 +16,7 @@ try:
 except:
 	sys.exit("Error: python libraries are not available")
 
+# load / create database
 database = os.path.expanduser("~") + "/.lightnews.db"
 if not os.path.exists(database):
 	import make.setupdb
@@ -25,8 +27,9 @@ ut = lnlib.UsenetGroup()
 io = lnio.lnio(database)
 co = lncmd.lncmd(ut, io)
 
-print ('Hello! This program is not ready yet ;)')
+print("Welcome to Lightnews!")
 
+# command-line
 cmd = co.getcmd()
 while (not cmd in co.getend() ):
 	co.docmd(cmd)
