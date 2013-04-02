@@ -24,24 +24,29 @@ class lncmd:
 	def analcmd(self, cmd):
 		return cmd.split(" ")
 
+	# do your job!
 	def docmd(self, cmd):
 		self.groups = self.io.getgroups()
 
 		cm = self.analcmd(cmd)
 
+		# Hi!
 		if cm[0] == "hello":
 			self.hello()
 
+		# sets from field in sent messages
 		elif cm[0] == "setfrom" and len(cm) == 2:
 			self.setfrom(cm[1])
 		elif cm[0] == "setfrom":
 			print ("Error! Use 'setfrom name@example.com'")
 
+		# adds group
 		elif cm[0] == "addgroup" and len(cm) == 3:
 			self.addgroup(cm[1], cm[2])
 		elif cm[0] == "addgroup":
 			print ("Error! Use 'addgroup server group'")
 
+		# removes group
 		elif cm[0] == "removegroup" and len(cm) == 3 and self.singlegroup == None:
 			self.removegroup(cm[1], cm[2])
 		elif cm[0] == "removegroup" and len(cm) == 3 and not self.singlegroup == None:
@@ -49,14 +54,17 @@ class lncmd:
 		elif cm[0] == "removegroup":
 			print ("Error! Use 'removegroup server group")
 
+		# list groups
 		elif cm[0] == "groups":
 			self.listgroups()
 
+		# set auth option for server
 		elif cm[0] == "setauth" and len(cm) == 2:
 			self.setauth(server=cm[1])
 		elif cm[0] == "setauth":
 			print ("Error! Use 'setauth server_name'")
 
+		# set cache for group
 		elif cm[0] == "setcache" and len(cm) == 1 and not self.singlegroup == None:
 			self.setcache(gid=self.singlegroup[0])
 		elif cm[0] == "setcache" and len(cm) == 2:
@@ -66,6 +74,7 @@ class lncmd:
 		elif cm[0] == "setcache":
 			print ("Error! Use 'setcache' in single-group mode or 'setcache group_id'")
 
+		# gimme group info ;)
 		elif cm[0] == "group" and len(cm) == 3:
 			self.group(gserver=cm[1], ggroup=cm[2])
 		elif cm[0] == "group" and len(cm) == 2:
@@ -75,6 +84,7 @@ class lncmd:
 		elif cm[0] == "group":
 			print ("Error! Use 'group group_id' or 'group server_name group_name'")
 
+		# messages' list
 		elif cm[0] == "list" and (len(cm) == 3) and not self.singlegroup == None:
 			self.artlist(0, None, cm[1], cm[2])
 		elif cm[0] == "list" and (len(cm) == 2) and not self.singlegroup == None:
@@ -86,6 +96,7 @@ class lncmd:
 		elif cm[0] == "list":
 			print ("Error! Command 'list' is available only in single-group mode.")
 
+		# messages' list, with read ones
 		elif cm[0] == "listall" and (len(cm) == 3) and not self.singlegroup == None:
 			self.artlist(1, None, cm[1], cm[2])
 		elif cm[0] == "listall" and (len(cm) == 2) and not self.singlegroup == None:
@@ -97,6 +108,7 @@ class lncmd:
 		elif cm[0] == "list":
 			print ("Error! Command 'listall' is available only in single-group mode.")
 
+		# gimme article
 		elif cm[0] == "article" and len(cm) == 2 and not self.singlegroup == None:
 			self.article(cm[1])
 		elif cm[0] == "article" and not self.singlegroup == None:
@@ -104,6 +116,7 @@ class lncmd:
 		elif cm[0] == "article":
 			print("Error! Command 'article' is available only in single-group mode.")
 
+		# send message
 		elif cm[0] == "send" and len(cm) == 2 and not self.singlegroup == None:
 			self.sendart(cm[1])
 		elif cm[0] == "send" and not self.singlegroup == None:
@@ -111,6 +124,7 @@ class lncmd:
 		elif cm[0] == "send":
 			print("Error! Usage 'send' or 'send art_id'. Available only in group mode.")
 
+		# download messages
 		elif cm[0] == "download" and ( (len(cm) == 2) or (len(cm) == 3) ):
 			self.download(cm)
 		elif cm[0] == "download" and not self.singlegroup == None:
@@ -118,18 +132,22 @@ class lncmd:
 		elif cm[0] == "download":
 			print ("Error! Use 'download' in single-group mode or 'download all' or 'download group_id' or 'download server group'")
 
+		# start/end single-group mode
 		elif cm[0] == "setgroup" and len(cm) == 2:
 			self.setgroup(cm[1])
 		elif cm[0] == "setgroup":
 			self.setgroup(None)
 
+		# help
 		elif cm[0] == "help":
 			print("Sorry, no help available in release 1.0 beta. Take a look at manual -- https://github.com/mplonski/lightnews")
 				
 	def hello(self):
 		print("Hello! :-)")
 
+	# just asking for username / password
 	def askforauth(self, tmp):
+		# 0 means auth is enabled for server
 		if not int(tmp) == 0:
 			return [None, None]
 		print("Authorisation to this server is required!")
@@ -139,6 +157,7 @@ class lncmd:
 		password = getpass.getpass()
 		return [username, password]
 
+	# powerfull def, checks connection and connects to server/group
 	def auth(self, server = None, sid = None, group = None, gid = None):
 		if (server == None) and (sid == None) and (not gid == None):
 			sid, server, sauth = self.io.getserver(gid=gid)
@@ -175,6 +194,7 @@ class lncmd:
 				self.ut.getgroup(group)
 		return 0
 
+	# adds server
 	def addserver(self, server):
 		if not self.io.getserver(server=server) == None:
 			return 1
@@ -188,6 +208,7 @@ class lncmd:
 			auth = 1
 		self.io.addserver(server, auth)
 
+	# adds group
 	def addgroup(self, server, group):
 		if self.io.getserver(server=server) == None:
 			self.addserver(server)
@@ -201,6 +222,7 @@ class lncmd:
 		self.io.addgroup(server, group, cache)
 		print("Added new group")
 
+	# sets cache for existing group
 	def setcache(self, server = None, group = None, gid = None):
 		if not gid == None:
 			try:
@@ -221,6 +243,7 @@ class lncmd:
 		self.io.updategroupcache(gr[0], cache)
 		print ("Done!")
 
+	# sets auth for existing server
 	def setauth(self, server = None, group = None, gid = None):
 		ser = self.io.getserver(server=server, group=group, gid=gid)
 		if ser == None:
@@ -237,16 +260,19 @@ class lncmd:
 		self.io.updateserver(ser[0], auth)
 		print ("Done!")
 
+	# removes group
 	def removegroup(self, server, group):
 		self.io.removegroup(server, group)
 		print("Group has been removed")
 
+	# gimme groups
 	def listgroups(self):
 		print("Your groups:")
 		for g in self.groups:
 			c = " " if g[4] == 0 else " [c] "
 			print(" " + str(g[0]) + ":" + c + g[1] + " on server " + g[3])
 
+	# give info about group
 	def group(self, grid = None, gserver = None, ggroup = None):
 		if not grid == None:
 			try:
@@ -271,6 +297,9 @@ class lncmd:
 		if not cache == None and cache > 0:
 			print ("Cache is enabled for last %s articles" % cache)
 
+	# does not display article
+	# 1) in case of list: printing new messages, passing in case of read
+	# 2) in case of listall: printing all messaged, new ones are bolded
 	def displayarticle(self, new, art_id, topic):
 		r = self.io.isarticleread(art_id, self.singlegroup[0])
 		if new == 0:
@@ -343,11 +372,13 @@ class lncmd:
 		print dart
 		return 0
 
+	# downloading cache
 	def download(self, cm):
 		if len(cm) == 2:
+			# download all
 			if cm[1] == 'all':
-				# download all
 				groups = self.io.getgroups()
+			# download group based on group_id
 			else:
 				try:
 					cm[1] = int(cm[1])
@@ -355,8 +386,10 @@ class lncmd:
 					print ("Error! Specified group_id (%s) is not a number." % cm[1])
 					return -1
 				groups = [ self.io.getgroup(gid = cm[1]) ]
+		# download group based on server and group_name
 		else:
 			groups = [ self.io.getgroup(server = cm[1], group = cm[2]) ]
+		# the fun begins
 		print ("Downloading started... stay calm :-) (in case of slow downlink and big cache it may take some time)")
 		for g in groups:
 			gid, name, sid, server, cache, count, first, last = g
@@ -366,6 +399,9 @@ class lncmd:
 				self.io.updategroup(gid, [ ["count", count], ["first", first], ["last", last] ])
 			if cache > 0:
 				# it's not very nice, TODO do it better :)
+				# note to myself: removing all messages from cache and downloading them again
+				# is not the best thing to do, TODO check messages available in cache and download
+				# only new messages. should be simple to do, but it's 3am and it's 'doc' commit (;
 				self.io.cleangrouparticle(gid)
 				art = [ ]
 				resp, arts = self.ut.getarticles('subject', str(int(last)-int(cache)+1), last)
@@ -375,9 +411,11 @@ class lncmd:
 				self.io.addarticles(art)
 		print("Done! Thanks for being patient!")
 
+	# send article
 	def sendart(self, aid = None):
 		topic = None
 		msubject = ""
+		# if you're responding to some post
 		if not aid == None:
 			try:
 				aid = int(aid)
@@ -390,22 +428,31 @@ class lncmd:
 				print("Error! Cannot find article no. %s" % aid)
 				return 1
 			topic = art[0][1]
+
+		# gathering necessary info about group/server
 		group = self.singlegroup[1]
 		server = self.singlegroup[3]
+
+		# is from field defined?
+		mfrom = self.io.getoption('from')
+		if mfrom == None:
+			print("Error! Fristly set option from")
+			return 1
+
+		# subject!
 		ask = "Topic: " if topic == None else ("Topic [Re: %s]: " % topic)
 		while (msubject == ""):
 			msubject = raw_input(ask)
 			if msubject == "" and not topic == None:
 				msubject = ("Re: %s" % topic)
-		mfrom = self.io.getoption('from')
-		if mfrom == None:
-			print("Error! Firstly set option from")
-			return 1
+
+		# geting all required options -- msg-id, date, content
 		mid = ("%s@%s" % (hashlib.sha224("%sRnD%s" % ( time.time(), socket.gethostname() ) ).hexdigest(), socket.gethostname() ))
 		mdate = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
 		print("Text: (Ctrl+D to finish)")
 		mcontent = sys.stdin.readlines()
 
+		# checking availability of temp file
 		tmp = tempfile.gettempdir()
 		if tmp == None:
 			tmp = "/tmp"
@@ -420,6 +467,8 @@ class lncmd:
 			else:
 				f.close()
 		fname = "%s/lightnews-message%s" % (tmp, i)
+
+		# generating mail
 		f = open(fname, 'w')
 		f.write("From: %s\n" % mfrom)
 		f.write("Date: %s\n" % mdate)
@@ -432,28 +481,43 @@ class lncmd:
 			f.write(k)
 		f.close()
 		
+		# auth & send
 		self.auth(gid=self.singlegroup[0])
 		self.ut.post( fname % (tmp, i) )
 
+		# remove file
 		os.remove( fname % (tmp, i) )
+		# happy end
 
+	# set from field
 	def setfrom(self, wfrom):
 		self.io.setoption('from', wfrom)
 		print("Done!")
 
+	# commands defining exit
 	def getend(self):
 		return ["q", "quit"]
 
+	# tasks to do at the end
 	def quit(self):
 		if self.ut.isconnected():
 			self.ut.disconnect()
 
+	# enable/disable single-group mode
+	# note to myself:
+	# self.singlegroup = [group_id, group_name, server_id, server_name, cache]
+	# TODO update singlegroup if there's any change done to group during s-g mode
+	# or, simplier, disable changing group during single-group mode
 	def setgroup(self, group):
+		# you're dumb or you don't remember how to use setgroup
 		if group == None and self.singlegroup == None:
 			print ("Error! Use 'setgroup group_name'")
+		# disabling single-group mode
 		elif group == None:
 			self.singlegroup = None
+		# trying to enable single-group mode
 		else:
+			# trying if 'group' is a number
 			try:
 				group = int(group)
 				n = 0
@@ -470,6 +534,7 @@ class lncmd:
 				return 0
 			except:
 				pass
+			# oh, 'group' is not a number
 			gis = []
 			for k in self.groups:
 				if k[1] == group:
@@ -499,6 +564,7 @@ class lncmd:
 				print("Switched to single-group mode -- group %s on server %s" % (gis[g2id][1], gis[g2id][3]))
 			self.group(grid=self.singlegroup[0])
 
+	# get command-line
 	def getcmd(self):
 		return raw_input("\n > " if self.singlegroup == None else ("\n %s > " % (self.singlegroup[1])) )
 

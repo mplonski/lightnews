@@ -12,6 +12,7 @@ from psycopg2.extensions import adapt
 class lnio:
 	def __init__(self, filename = None):
 		# settings' file name
+		# ergh, what? there's no settings' file
 		self.filename = "./ln.db" if filename == None else filename
 		self.conn = sqlite3.connect(self.filename)
 		self.c = self.conn.cursor()
