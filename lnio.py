@@ -86,6 +86,8 @@ class lnio:
 		else:
 			gid = rg[0][0]
 			self.c.execute("DELETE FROM groups WHERE id = %s" % gid)
+			self.c.execute("DELETE FROM articles WHERE group_id = %s" % gid)
+			self.c.execute("DELETE FROM read_art WHERE group_id = %s" % gid)
 			self.conn.commit()
 			self.cleangrouparticle(gid)
 			return 0
