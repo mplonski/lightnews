@@ -31,7 +31,7 @@ print("Welcome to Lightnews!")
 
 # command-line
 cmd = co.getcmd()
-while (not cmd in co.getend() ):
+while not (cmd in co.getend()):
 	co.docmd(cmd)
 	cmd = co.getcmd()
 co.quit()
