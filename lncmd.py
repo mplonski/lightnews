@@ -166,16 +166,26 @@ class lncmd:
 		return [username, password]
 
 	# powerfull def, checks connection and connects to server/group
-	def auth(self, server = None, sid = None, group = None, gid = None):
+	def auth(self, server = None, sid = None, group = None, gid = None, sauth = None):
 		if (server == None) and (sid == None) and (not gid == None):
 			sid, server, sauth = self.io.getserver(gid=gid)
 		elif not ((server == None) and (sid == None)):
-			sid, server, sauth = self.io.getserver(sid=sid, server=server)
+			tmp = self.io.getserver(sid=sid, server=server)
+			if tmp == None:
+				sid = -1
+				server = server
+				sauth = sauth
+			else:
+				sid, server, sauth = tmp
 
 		if not ((group == None) and (gid == None)):
 			gr = self.io.getgroup(server=server, group=group, gid=gid)
-			gid = gr[0]
-			group = gr[1]
+			if gr == None:
+				gid = -1
+				group = group
+			else:
+				gid = gr[0]
+				group = gr[1]
 
 		# just checking if connection is up
 		if server == None and group == None and sid == None and gid == None:
@@ -186,7 +196,11 @@ class lncmd:
 				gr = self.io.getgroup(server=server, group=group)
 
 				suser, spass = self.askforauth(sauth)
-				self.ut.connect(self.ut.getservername(), suser, spass)
+				try:
+					self.ut.connect(self.ut.getservername(), suser, spass)
+				except:
+					print("Error! Cannot connect to the server. Check server name and internet connection")
+					return 1
 				return 0
 			else: # it's up, don't worry, be happy
 				return 0
@@ -196,16 +210,25 @@ class lncmd:
 			# not connected or connected to other server
 			if (not tmp) or (tmp and not self.ut.getservername() == server):
 				suser, spass = self.askforauth(sauth)
-				self.ut.connect(server, suser, spass)
+				try:
+					self.ut.connect(server, suser, spass)
+				except:
+					print("Error! Cannot connect to the server. Check server name and internet connection")
+					return 1
 			# if group is set and (not connected or connected to other group)
 			if (not group == None) and ((not tmp) or (tmp and not self.ut.getgroupname() == group)):
-				self.ut.getgroup(group)
+				try:
+					self.ut.getgroup(group)
+				except:
+					print("Error! Cannot get specified group. Check group_name and internet connection")
+					return 1
 		return 0
 
 	# get list of group
 	def getgrouplist(self, server, pattern):
 		print("Please wait...")
-		self.auth(server=server)
+		if self.auth(server=server) == 1:
+			return None
 		gr = self.ut.getlist()[1]
 		if len(gr) == 0:
 			print("Error! No groups available on this server")
@@ -222,7 +245,7 @@ class lncmd:
 	# adds server
 	def addserver(self, server):
 		if not self.io.getserver(server=server) == None:
-			return 1
+			return 0
 		ans = ["y", "n", "Y", "N"]
 		auth = None
 		while not (auth in ans):
@@ -231,11 +254,18 @@ class lncmd:
 			auth = 0
 		else:
 			auth = 1
+		if self.auth(server=server, sauth=auth) == 1:
+			print("Server has NOT been added")
+			return 1
 		self.io.addserver(server, auth)
+		print("Server has been added")
+		return 0
 
 	# adds group
 	def addgroup(self, server, group):
-		self.addserver(server)
+		if self.addserver(server) == 1:
+			print("Group has NOT been added")
+			return None
 
 		cache = raw_input ("How many articles are to be cached? (0 means none) ")
 		try:
@@ -243,6 +273,11 @@ class lncmd:
 		except:
 			print ("%s is not a number, saving 0.")
 			cache = 0
+
+		if self.auth(server=server, group=group) == 1:
+			print("Group has NOT been added.")
+			return 1
+
 		self.io.addgroup(server, group, cache)
 		print("Added new group")
 
@@ -314,7 +349,8 @@ class lncmd:
 		# yupi, group exists!
 		gid, name, sid, server, cache, count, first, last = dgroup
 		if cache == -1:
-			self.auth(server=server)
+			if self.auth(server=server) == 1:
+				return 1
 			resp, count, first, last, name = self.ut.getgroup(name)
 			cache = None
 		print("Group %s (id=%s) on server %s has %s articles, range %s to %s" % (name, gid, server, count, first, last))
@@ -360,7 +396,8 @@ class lncmd:
 			if self.singlegroup[4] > 0:
 				print("Group is empty")
 			else:
-				self.auth(server = group[3], group = group[1])
+				if self.auth(server = group[3], group = group[1]) == 1:
+					return 1
 				resp, count, first, last, name = self.ut.getgroup(group[1])
 				if number == None:
 					resp, arts = self.ut.getarticles('subject', start, end)
@@ -383,7 +420,8 @@ class lncmd:
 			return -1
 		dart = self.io.getarticle(gid, art)
 		if dart == None:
-			self.auth(gid=gid)
+			if self.auth(gid=gid) == 1:
+				return 1
 			dart = self.ut.getbody(str(art))
 			dart = dart[3]
 			tmp = ""
@@ -418,7 +456,8 @@ class lncmd:
 		for g in groups:
 			gid, name, sid, server, cache, count, first, last = g
 			if cache > -1:
-				self.auth(server = server)
+				if self.auth(server = server) == 1:
+					return 1
 				resp, count, first, last, name = self.ut.getgroup(name)
 				self.io.updategroup(gid, [ ["count", count], ["first", first], ["last", last] ])
 			if cache > 0:
@@ -450,7 +489,8 @@ class lncmd:
 		topic = None
 		msubject = ""
 		# if you're responding to some post
-		self.auth(gid=self.singlegroup[0])
+		if self.auth(gid=self.singlegroup[0]) == 1:
+			return 1
 		if not aid == None:
 			try:
 				aid = int(aid)
@@ -516,7 +556,9 @@ class lncmd:
 		f.close()
 		
 		# auth & send
-		self.auth(gid=self.singlegroup[0])
+		if self.auth(gid=self.singlegroup[0]) == 1:
+			print("Message has NOT been sent. It has been saved to %s" % fname)
+			return 1
 		self.ut.post( fname % (tmp, i) )
 
 		# remove file
