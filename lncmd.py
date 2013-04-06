@@ -148,7 +148,11 @@ class lncmd:
 
 		# help
 		elif cm[0] == "help":
-			print("Sorry, no help available in release 1.0 beta. Take a look at manual -- https://github.com/mplonski/lightnews")
+			self.help()
+
+		else:
+			print("Command not found. Run 'help' to display available commands.")
+			return 0
 				
 	def hello(self):
 		print("Hello! :-)")
@@ -643,4 +647,26 @@ class lncmd:
 	# get command-line
 	def getcmd(self):
 		return raw_input("\n > " if self.singlegroup == None else ("\n %s > " % (self.singlegroup[1])) )
+
+	def help(self):
+		print("Lightnews")
+		print("Version: 1.1 beta\n")
+		print("This help does NOT contain all available options. Take a look at https://github.com/mplonski/lightnews :-)\n")
+		print("Manual:")
+		print(" - hello -- says hello")
+		print(" - addgroup server_name group_name -- adds group")
+		print(" - removegroup server_name group_name -- removes group")
+		print(" - glist server_name pattern -- displays list of groups on server_name matching pattern")
+		print(" - groups -- displays list of groups")
+		print(" - setgroup -- enables/disables single-group mode")
+		print(" - list -- displays list of unread topics in group")
+		print(" - listall -- displays list of topics in group")
+		print(" - article -- displays body of specified article")
+		print(" - send -- send message")
+		print(" - setfrom -- sets from field in sent messages")
+		print(" - download -- downloads cache")
+		print(" - setcache -- sets cache")
+		print(" - setauth -- sets auth")
+		print(" - help -- displays help")
+		return 0
 
