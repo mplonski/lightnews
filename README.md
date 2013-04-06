@@ -148,6 +148,10 @@ Hello! :-)
 
 Works in both modes.
 
+### quit
+
+Exists application.
+
 ### addgroup
 
 Adds new group.
