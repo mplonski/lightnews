@@ -1,6 +1,6 @@
 import sqlite3
 
-DEBUG = 1 # 1 - enabled
+DEBUG = 0 # 1 - enabled
 
 def setupdb(url):
 
