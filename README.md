@@ -134,8 +134,6 @@ group_name > setgroup
 manual
 ------
 
-### beta release -- manual should be up-to-date ###
-
 ### hello
 
 Says hello.
