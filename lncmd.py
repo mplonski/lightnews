@@ -654,6 +654,7 @@ class lncmd:
 		print("This help does NOT contain all available options. Take a look at https://github.com/mplonski/lightnews :-)\n")
 		print("Manual:")
 		print(" - hello -- says hello")
+		print(" - quit -- exists application")
 		print(" - addgroup server_name group_name -- adds group")
 		print(" - removegroup server_name group_name -- removes group")
 		print(" - glist server_name pattern -- displays list of groups on server_name matching pattern")
