@@ -16,7 +16,7 @@ light usenet client
 version
 --------
 
-Lightnews is in 1.0 beta version!
+Lightnews is in 1.1 beta version!
 
 ```python
 def behappy():
