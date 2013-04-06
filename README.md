@@ -26,14 +26,9 @@ def behappy():
 changelog
 ---------
 
-Apr 06, 2013
- - release 1.1 beta ([commit](/mplonski/lightnews/commit/f855aaffe78e94f31f0a84420b61fcdec9908986))
-
-Mar 31, 2013
- - release 1.0 beta ([commit with bugfixes](/mplonski/lightnews/commit/be43f1b3c319da72838cad7145a435a96437e2b6))
-
-Mar 11, 2013
- - first commit
+ - Apr 06, 2013 - release 1.1 beta ([commit](/mplonski/lightnews/commit/f855aaffe78e94f31f0a84420b61fcdec9908986))
+ - Mar 31, 2013 - release 1.0 beta ([commit with bugfixes](/mplonski/lightnews/commit/be43f1b3c319da72838cad7145a435a96437e2b6))
+ - Mar 11, 2013 - first commit
 
 requirements
 ------------
