@@ -1,3 +1,5 @@
+** LIGHTNEWS IS NO LONGER MAINTAINED **
+
 Lightnews
 =========
 
